@@ -1,0 +1,128 @@
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+git branch
+git branch
+ls
+git commit -a -m "edit cname"
+git push origin master
+touch README.md
+git add --all .
+git commit -m "added readme file"
+git push origin master
+cd ..
+ls
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+git branch
+git commit -a -m "performed some bug fixes as well as colour balancing"
+git push jdog master
+grunt
+git commit -a -m "bump version up"
+git push jdog master
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+grunt
+cd ..
+grunt
+grunt
+git add --all .
+git commit -m "updated some styles and fixed banner horizontal scaling issue"
+git remote
+git push jdog master
+grunt
+git commmit -a -m "packaging v 2.1.0 for distribution. Contains accumulated bug fixes."
+git commit -a -m "packaging v 2.1.0 for distribution. Contains accumulated bug fixes."
+git push jdog master
+cd ../..
+cd ..
+git branch
+git commit -a -m "some naming changes to extension CL hooks"
+cd..
+cd ..
+git add --all .
+git commit -m "created expenses plugin"
+git push origin master
+./configure
+cd ..
+ls
+rake
+cloc .
+lewt --help
+ruby --help
+lewt --help
+ls
+git branch
+git commit -a -m "removed bottom msg"
+git push origin master
