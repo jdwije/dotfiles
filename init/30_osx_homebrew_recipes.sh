@@ -24,6 +24,7 @@ recipes=(
   terminal-notifier
   the_silver_searcher
   tree
+  emacs
 )
 
 brew_install_recipes

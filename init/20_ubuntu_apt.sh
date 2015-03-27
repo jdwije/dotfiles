@@ -52,6 +52,7 @@ packages=(
   sl
   telnet
   tree
+  emacs24
 )
 
 packages=($(setdiff "${packages[*]}" "$(dpkg --get-selections | grep -v deinstall | awk '{print $1}')"))
