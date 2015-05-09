@@ -27,7 +27,7 @@ The easiest way to install the XCode Command Line Tools in OSX 10.9+ is to open 
 
 Update APT with `sudo apt-get -qq update && sudo apt-get -qq dist-upgrade` first.
 
-### Actual installation (for you)
+### Installation
 
 1. Fork this repo
 2. Open a terminal/shell and do this:
@@ -38,17 +38,14 @@ export github_user=YOUR_GITHUB_USER_NAME
 bash -c "$(curl -fsSL https://raw.github.com/$github_user/dotfiles/master/bin/dotfiles)" && source ~/.bashrc
 ```
 
-Since you'll be using the [dotfiles][dotfiles] command on subsequent runs, you'll only have to export the `github_user` variable for the initial install.
-
-There's a lot of stuff that requires admin access via `sudo`, so be warned that you might need to enter your password here or there.
+You might have to type your password in here and there.
 
 ## Inspiration
-<https://github.com/cowboy/dotfiles>
-<https://github.com/gf3/dotfiles>
-<https://github.com/mathiasbynens/dotfiles>
-(and 15+ years of accumulated crap)
+<https://github.com/cowboy/dotfiles>  
+<https://github.com/gf3/dotfiles>  
+<https://github.com/mathiasbynens/dotfiles>  
 
 ## License
 Copyright (c) 2014 "Cowboy" Ben Alman
 Licensed under the MIT license.
-<http://benalman.com/about/license/>
+<http://benalman.com/about/license/>  
