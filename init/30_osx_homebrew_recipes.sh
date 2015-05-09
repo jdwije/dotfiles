@@ -6,24 +6,11 @@ is_osx || return 1
 
 # Homebrew recipes
 recipes=(
-  ansible
   bash
-  cmatrix
-  cowsay
-  git
-  git-extras
-  htop-osx
-  hub
-  id3tool
-  lesspipe
   man2html
   mercurial
   nmap
-  sl
-  ssh-copy-id
-  terminal-notifier
   the_silver_searcher
-  tree
   emacs
 )
 
@@ -33,13 +20,6 @@ brew_install_recipes
 
 # This is where brew stores its binary symlinks
 local binroot="$(brew --config | awk '/HOMEBREW_PREFIX/ {print $2}')"/bin
-
-# htop
-if [[ "$(type -P $binroot/htop)" ]] && [[ "$(stat -L -f "%Su:%Sg" "$binroot/htop")" != "root:wheel" || ! "$(($(stat -L -f "%DMp" "$binroot/htop") & 4))" ]]; then
-  e_header "Updating htop permissions"
-  sudo chown root:wheel "$binroot/htop"
-  sudo chmod u+s "$binroot/htop"
-fi
 
 # bash
 if [[ "$(type -P $binroot/bash)" && "$(cat /etc/shells | grep -q "$binroot/bash")" ]]; then
