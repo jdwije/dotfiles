@@ -275,3 +275,16 @@ Uses `current-date-time-format' for the formatting the date/time."
 (provide '.emacs)
 ;;; .emacs ends here
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-enabled-themes (quote (jdw-emacs-dark)))
+ '(custom-safe-themes (quote ("e12eca93c9766062e6ac435907a7df010f583d1c2d3c621279418a5c8f75566e" default))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
