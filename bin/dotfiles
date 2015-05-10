@@ -1,18 +1,38 @@
 #!/usr/bin/env bash
 [[ "$1" == "source" ]] || \
 
-echo 'Dotfiles - "Cowboy" Ben Alman - http://benalman.com/'
+echo ''
+echo ''
+echo ''
+
+echo '     @@@  @@@@@@@    @@@@@@    @@@@@@@@  '
+echo '     @@@  @@@@@@@@  @@@@@@@@  @@@@@@@@@  '
+echo '     @@!  @@!  @@@  @@!  @@@  !@@        '
+echo '     !@!  !@!  @!@  !@!  @!@  !@!        '
+echo '     !!@  @!@  !@!  @!@  !@!  !@! @!@!@  '
+echo '     !!!  !@!  !!!  !@!  !!!  !!! !!@!!  '
+echo '     !!:  !!:  !!!  !!:  !!!  :!!   !!:  '
+echo '!!:  :!:  :!:  !:!  :!:  !:!  :!:   !::  '
+echo '::: : ::   :::: ::  ::::: ::   ::: ::::  '
+echo ' : :::    :: :  :    : :  :    :: :: :   '
+
+echo ''
+echo ''
+echo ''
+echo "This script performs a quick setup for osx and linux, see the README for requirments. It was originally adapted"
+echo "from Ben Alman's .dotfiles see https://github.com/cowboy/dotfiles..."
+echo ''
+echo ''
+echo ''
+                                         
 
 if [[ "$1" == "-h" || "$1" == "--help" ]]; then cat <<HELP
 
 Usage: $(basename "$0")
 
 See the README for documentation.
-https://github.com/cowboy/dotfiles
+https://github.com/jdwije/dotfiles
 
-Copyright (c) 2014 "Cowboy" Ben Alman
-Licensed under the MIT license.
-http://benalman.com/about/license/
 HELP
 exit; fi
 
