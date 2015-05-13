@@ -10,10 +10,6 @@ grunt
 grunt
 grunt
 grunt
-grunt
-grunt
-grunt
-grunt
 git branch
 git branch
 ls
@@ -126,3 +122,7 @@ ls
 git branch
 git commit -a -m "removed bottom msg"
 git push origin master
+ll
+dev
+quit
+exit

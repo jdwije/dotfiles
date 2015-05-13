@@ -271,6 +271,34 @@ Uses `current-date-time-format' for the formatting the date/time."
 (global-set-key "\C-c\C-t" 'insert-current-date-time)
 ;; (global-set-key "\C-c\C-t" 'insert-current-time)
 
+(defun set-exec-path-from-shell-PATH ()
+  (let ((path-from-shell (replace-regexp-in-string
+                          "[ \t\n]*$"
+                          ""
+                          (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
+    (setenv "PATH" path-from-shell)
+    (setq eshell-path-env path-from-shell) ; for eshell users
+    (setq exec-path (split-string path-from-shell path-separator))))
+
+(when window-system (set-exec-path-from-shell-PATH))
+
+(defun copy-buffer-file-name-as-kill (choice)
+  "Copy the buffer-file-name to the kill-ring"
+  (interactive "cCopy Buffer Name (F) Full, (D) Directory, (N) Name")
+  (let ((new-kill-string)
+        (name (if (eq major-mode 'dired-mode)
+                  (dired-get-filename)
+                (or (buffer-file-name) ""))))
+    (cond ((eq choice ?f)
+           (setq new-kill-string name))
+          ((eq choice ?d)
+           (setq new-kill-string (file-name-directory name)))
+          ((eq choice ?n)
+           (setq new-kill-string (file-name-nondirectory name)))
+          (t (message "Quit")))
+    (when new-kill-string
+      (message "%s copied" new-kill-string)
+      (kill-new new-kill-string))))
 
 (provide '.emacs)
 ;;; .emacs ends here
@@ -281,7 +309,8 @@ Uses `current-date-time-format' for the formatting the date/time."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes (quote (jdw-emacs-dark)))
- '(custom-safe-themes (quote ("e12eca93c9766062e6ac435907a7df010f583d1c2d3c621279418a5c8f75566e" default))))
+ '(custom-safe-themes (quote ("e12eca93c9766062e6ac435907a7df010f583d1c2d3c621279418a5c8f75566e" default)))
+ '(send-mail-function (quote smtpmail-send-it)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
