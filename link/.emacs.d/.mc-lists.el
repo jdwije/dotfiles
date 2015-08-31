@@ -10,6 +10,7 @@
 	c-electric-slash
 	calendar-scroll-left
 	forward-sentence
+	go-mode-insert-and-indent
 	indent-for-tab-command
 	kill-region
 	markdown-exdent-or-delete

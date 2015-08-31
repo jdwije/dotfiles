@@ -1,13 +1,28 @@
 
 ;;; emacs --- my emacs config file
 
-;; package management code
+;;; Code:
+
+;; package management
 (require 'package)
+;; Marmalade
+(add-to-list 'package-archives
+             '("marmalade" . "http://marmalade-repo.org/packages/"))
+
+;; The original ELPA archive still has some useful
+;; stuff.
+(add-to-list 'package-archives
+             '("elpa" . "http://tromey.com/elpa/"))
+
 (package-initialize)
 
 (defvar default-packages
-  '(ac-ispell auto-complete base16-theme bongo coffee-mode discover emr figlet flycheck flymake-jshint flymake-jslint flymake-php flymake-ruby flymake-yaml flymake-easy gandalf-theme hc-zenburn-theme inf-ruby key-chord less-css-mode list-utils makey markdown-mode+ markdown-toc markdown-mode mmm-mode monochrome-theme multiple-cursors noctilux-theme nzenburn-theme organic-green-theme paredit pastels-on-dark-theme php+-mode php-auto-yasnippets php-extras php-mode planet-theme popup projectile pkg-info epl purple-haze-theme redshank ruby-additional ruby-block ruby-dev ruby-electric ruby-refactor rw-hunspell s scss-mode seti-theme smartparens dash soft-charcoal-theme spacegray-theme web-mode yaml-mode yari yasnippet zenburn-theme)
+  '(ac-ispell auto-complete base16-theme bongo coffee-mode discover emr figlet flycheck flymake-jshint flymake-jslint flymake-php flymake-ruby flymake-yaml flymake-easy gandalf-theme hc-zenburn-theme inf-ruby key-chord less-css-mode list-utils makey markdown-mode+ markdown-toc markdown-mode mmm-mode monochrome-theme multiple-cursors noctilux-theme zenburn-theme organic-green-theme paredit pastels-on-dark-theme php+-mode php-mode popup projectile pkg-info epl redshank ruby-electric rw-hunspell s scss-mode smartparens dash web-mode yaml-mode yari ruby-block)
   "A list of packages to ensure are installed at launch.")
+
+;; php-auto-yasnippet planet-theme purple-haze-theme seti-theme
+;; soft-charcoal-theme spacegray-theme zenburn-theme  yasnippetruby-additional
+;; ruby-dev ruby-refactor
 
 (defun default-packages-installed-p ()
   (loop for p in default-packages
@@ -47,21 +62,17 @@
 
 (global-set-key (kbd "C-s-,") 'toggle-fullscreen)
 
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("marmalade" . "http://marmalade-repo.org/packages/")
-                         ("melpa" . "http://melpa.milkbox.net/packages/")))
-
 ;; $PATH fix for internal shells
-(defun set-exec-path-from-shell-PATH ()
-  (let ((path-from-shell (replace-regexp-in-string
-                          "[ \t\n]*$"
-                          ""
-                          (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
-    (setenv "PATH" path-from-shell)
-    (setq eshell-path-env path-from-shell) ; for eshell users
-    (setq exec-path (split-string path-from-shell path-separator))))
+;; (defun set-exec-path-from-shell-PATH ()
+;;   (let ((path-from-shell (replace-regexp-in-string
+;;                           "[ \t\n]*$"
+;;                           ""
+;;                           (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
+;;     (setenv "PATH" path-from-shell)
+;;     (setq eshell-path-env path-from-shell) ; for eshell users
+;;     (setq exec-path (split-string path-from-shell path-separator))))
 
-(when window-system (set-exec-path-from-shell-PATH)) 
+;; (when window-system (set-exec-path-from-shell-PATH)) 
 
 ;; source: http://steve.yegge.googlepages.com/my-dot-emacs-file
 (defun rename-file-and-buffer (new-name)
@@ -271,17 +282,6 @@ Uses `current-date-time-format' for the formatting the date/time."
 (global-set-key "\C-c\C-t" 'insert-current-date-time)
 ;; (global-set-key "\C-c\C-t" 'insert-current-time)
 
-(defun set-exec-path-from-shell-PATH ()
-  (let ((path-from-shell (replace-regexp-in-string
-                          "[ \t\n]*$"
-                          ""
-                          (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
-    (setenv "PATH" path-from-shell)
-    (setq eshell-path-env path-from-shell) ; for eshell users
-    (setq exec-path (split-string path-from-shell path-separator))))
-
-(when window-system (set-exec-path-from-shell-PATH))
-
 (defun copy-buffer-file-name-as-kill (choice)
   "Copy the buffer-file-name to the kill-ring"
   (interactive "cCopy Buffer Name (F) Full, (D) Directory, (N) Name")
@@ -300,6 +300,20 @@ Uses `current-date-time-format' for the formatting the date/time."
       (message "%s copied" new-kill-string)
       (kill-new new-kill-string))))
 
+
+;;  in buffer build system
+(setq build-buffer "*terminal*")
+(setq build-cmd "vendor/bin/phpspec run\n")
+
+(defun build-in-buffer ()
+  "Send a build command to a running shell"
+  (interactive)
+  (process-send-string build-buffer build-cmd))
+
+;; custom build hooks
+;; use this shit to have emacs send buidl command to termnial on save file
+(add-hook 'after-save-hook 'build-in-buffer)
+
 (provide '.emacs)
 ;;; .emacs ends here
 
@@ -308,9 +322,19 @@ Uses `current-date-time-format' for the formatting the date/time."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-enabled-themes (quote (jdw-emacs-dark)))
- '(custom-safe-themes (quote ("e12eca93c9766062e6ac435907a7df010f583d1c2d3c621279418a5c8f75566e" default)))
- '(send-mail-function (quote smtpmail-send-it)))
+ '(aquamacs-customization-version-id 0)
+ '(custom-enabled-themes (quote (evenhold)))
+ '(custom-safe-themes
+   (quote
+    ("523d5a027e2f378ad80f9b368db450f4a5fa4a159ae11d5b66ccd78b3f5f807d" "557c715762e97e749c1c45d23f117056664dafd94465ec8c98d53e4929205a9c" "e12eca93c9766062e6ac435907a7df010f583d1c2d3c621279418a5c8f75566e" default)))
+ '(one-buffer-one-frame-mode nil)
+ '(package-archives
+   (quote
+    (("marmalade" . "http://marmalade-repo.org/packages/")
+     ("gnu" . "http://elpa.gnu.org/packages/")
+     ("elpa" . "http://tromey.com/elpa/"))))
+ '(send-mail-function (quote smtpmail-send-it))
+ '(tabbar-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

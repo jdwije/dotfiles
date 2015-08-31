@@ -1,9 +1,27 @@
 (deftheme jdw-emacs-dark
-  "Created 2015-03-27.")
+  "JDW Aquamacs Dark Created 2015-08-19.")
+
+(custom-theme-set-variables
+ 'jdw-emacs-dark
+ '(aquamacs-customization-version-id 0)
+ '(custom-safe-themes (quote ("e12eca93c9766062e6ac435907a7df010f583d1c2d3c621279418a5c8f75566e" default)))
+ '(package-archives (quote (("marmalade" . "http://marmalade-repo.org/packages/") ("gnu" . "http://elpa.gnu.org/packages/") ("elpa" . "http://tromey.com/elpa/"))))
+ '(send-mail-function (quote smtpmail-send-it))
+ '(one-buffer-one-frame-mode nil)
+ '(tabbar-mode t))
 
 (custom-theme-set-faces
  'jdw-emacs-dark
- '(default ((t (:family "Menlo" :foundry "apple" :width normal :height 120 :weight normal :slant normal :underline nil :overline nil :strike-through nil :box nil :inverse-video nil :foreground "#f6f3e8" :background "#242424" :stipple nil :inherit nil))))
+ '(messages-buffer-mode-default ((t (:inherit special-mode-default))))
+ '(special-mode-default ((t (:inherit autoface-default))))
+ '(text-mode-default ((t (:inherit autoface-default :stipple nil :strike-through nil :underline nil :slant normal :weight normal :height 130 :width normal :family "Lucida Grande"))))
+ '(prog-mode-default ((t (:inherit autoface-default))))
+ '(fundamental-mode-default ((t (:inherit autoface-default))))
+ '(emacs-lisp-mode-default ((t (:inherit prog-mode-default))))
+ '(dired-mode-default ((t (:inherit autoface-default))))
+ '(minibuffer-inactive-mode-default ((t (:inherit autoface-default))))
+ '(custom-theme-choose-mode-default ((t (:inherit special-mode-default))))
+ '(custom-new-theme-mode-default ((t (:inherit autoface-default))))
  '(cursor ((t (:background "#656565"))))
  '(fixed-pitch ((t (:family "Monospace"))))
  '(variable-pitch ((t (:family "Sans Serif"))))
@@ -45,6 +63,7 @@
  '(lazy-highlight ((t (:foreground "#a0a8b0" :background "#384048"))))
  '(match ((((class color) (min-colors 88) (background light)) (:background "yellow1")) (((class color) (min-colors 88) (background dark)) (:background "RoyalBlue3")) (((class color) (min-colors 8) (background light)) (:foreground "black" :background "yellow")) (((class color) (min-colors 8) (background dark)) (:foreground "white" :background "blue")) (((type tty) (class mono)) (:inverse-video t)) (t (:background "gray"))))
  '(next-error ((t (:inherit (region)))))
- '(query-replace ((t (:inherit (isearch))))))
+ '(query-replace ((t (:inherit (isearch)))))
+ '(default ((t (:family "Menlo" :foundry "apple" :width normal :height 120 :weight normal :slant normal :underline nil :overline nil :strike-through nil :box nil :inverse-video nil :foreground "#f6f3e8" :background "#242424" :stipple nil :inherit nil)))))
 
 (provide-theme 'jdw-emacs-dark)

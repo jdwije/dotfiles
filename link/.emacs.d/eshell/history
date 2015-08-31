@@ -6,10 +6,6 @@ grunt
 grunt
 grunt
 grunt
-grunt
-grunt
-grunt
-grunt
 git branch
 git branch
 ls
@@ -125,4 +121,8 @@ git push origin master
 ll
 dev
 quit
+exit
+ls
+go install bot.ly
+go install bot.ly
 exit
