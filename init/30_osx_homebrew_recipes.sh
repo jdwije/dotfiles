@@ -12,6 +12,7 @@ recipes=(
   nmap
   the_silver_searcher
   emacs
+  ispell
 )
 
 brew_install_recipes

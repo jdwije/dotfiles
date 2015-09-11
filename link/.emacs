@@ -310,9 +310,59 @@ Uses `current-date-time-format' for the formatting the date/time."
   (interactive)
   (process-send-string build-buffer build-cmd))
 
-;; custom build hooks
-;; use this shit to have emacs send buidl command to termnial on save file
-(add-hook 'after-save-hook 'build-in-buffer)
+(defun enable-in-buffer-builds (buf cmd)
+  (interactive "bSpecify target buffer: \nsSpecify build command to send to buffer %s:")
+  (setq build-buffer buf)
+  (setq build-cmd cmd)
+  (add-hook 'after-save-hook 'build-in-buffer)
+  )
+
+(defun disable-in-buffer-builds ()
+  (interactive)
+  (remove-hook 'after-save-hook 'build-in-buffer)
+  )
+
+;; php coding standards fixer
+(defun php-cs-fix ()
+  (interactive)
+  (progn (shell-command (concat "php-cs-fixer fix " (buffer-file-name) " -v"))
+	 (revert-buffer nil t)))
+
+;; zip/unzip files in dired mode
+(eval-after-load "dired-aux"
+   '(add-to-list 'dired-compress-file-suffixes 
+                 '("\\.zip\\'" ".zip" "unzip")))
+
+(eval-after-load "dired"
+  '(define-key dired-mode-map "z" 'dired-zip-files))
+(defun dired-zip-files (zip-file)
+  "Create an archive containing the marked files."
+  (interactive "sEnter name of zip file: ")
+
+  ;; create the zip file
+  (let ((zip-file (if (string-match ".zip$" zip-file) zip-file (concat zip-file ".zip"))))
+    (shell-command 
+     (concat "zip " 
+             zip-file
+             " "
+             (concat-string-list 
+              (mapcar
+               #'(lambda (filename)
+                  (file-name-nondirectory filename))
+               (dired-get-marked-files))))))
+
+  (revert-buffer)
+
+  ;; remove the mark on all the files  "*" to " "
+  ;; (dired-change-marks 42 ?\040)
+  ;; mark zip file
+  ;; (dired-mark-files-regexp (filename-to-regexp zip-file))
+  )
+
+(defun concat-string-list (list) 
+   "Return a string which is a concatenation of all elements of the list separated by spaces" 
+   (mapconcat #'(lambda (obj) (format "%s" obj)) list " "))
+
 
 (provide '.emacs)
 ;;; .emacs ends here
@@ -327,6 +377,7 @@ Uses `current-date-time-format' for the formatting the date/time."
  '(custom-safe-themes
    (quote
     ("523d5a027e2f378ad80f9b368db450f4a5fa4a159ae11d5b66ccd78b3f5f807d" "557c715762e97e749c1c45d23f117056664dafd94465ec8c98d53e4929205a9c" "e12eca93c9766062e6ac435907a7df010f583d1c2d3c621279418a5c8f75566e" default)))
+ '(flycheck-php-phpcs-executable "/Users/jdw/pear/bin/phpcs")
  '(one-buffer-one-frame-mode nil)
  '(package-archives
    (quote
