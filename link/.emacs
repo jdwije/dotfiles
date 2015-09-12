@@ -340,6 +340,7 @@ Uses `current-date-time-format' for the formatting the date/time."
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 (global-set-key (kbd "C-c qr") 'query-replace-regexp)
 (global-set-key (kbd "C-c df") 'vc-diff)
+(global-set-key (kbd "C-c cf") 'vc-next-action)
 (global-set-key (kbd "C-c rg") 'rgrep)
 (global-set-key (kbd "C-c ff") 'find-name-dired)
 
