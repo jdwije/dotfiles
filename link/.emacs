@@ -386,29 +386,3 @@ welcome to...
 
 (provide '.emacs)
 ;;; .emacs ends here
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(aquamacs-customization-version-id 0)
- '(custom-enabled-themes (quote (evenhold)))
- '(custom-safe-themes
-   (quote
-    ("523d5a027e2f378ad80f9b368db450f4a5fa4a159ae11d5b66ccd78b3f5f807d" "557c715762e97e749c1c45d23f117056664dafd94465ec8c98d53e4929205a9c" "e12eca93c9766062e6ac435907a7df010f583d1c2d3c621279418a5c8f75566e" default)))
- '(flycheck-php-phpcs-executable "/Users/jdw/pear/bin/phpcs")
- '(one-buffer-one-frame-mode nil)
- '(package-archives
-   (quote
-    (("marmalade" . "http://marmalade-repo.org/packages/")
-     ("gnu" . "http://elpa.gnu.org/packages/")
-     ("elpa" . "http://tromey.com/elpa/"))))
- '(send-mail-function (quote smtpmail-send-it))
- '(tabbar-mode t))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
