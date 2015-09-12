@@ -338,12 +338,13 @@ Uses `current-date-time-format' for the formatting the date/time."
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+(global-set-key (kbd "C-c qr") 'query-replace-regexp)
+(global-set-key (kbd "C-c df") 'vc-diff)
+(global-set-key (kbd "C-c rg") 'rgrep)
 
 ;; replace backspace with backwards kill word
 (global-set-key (kbd "DEL") 'backward-kill-word)
 (global-set-key (kbd "M-DEL") 'backward-delete-char)
-(global-set-key (kbd "C-c qr") 'query-replace-regexp)
-(global-set-key (kbd "C-c df") 'vc-diff)
 
 ; set f5 + f6 to horizontal window size. set f7 + f8 to vertical window size.
 (global-set-key (kbd "<f5>") 'shrink-window-horizontally)
