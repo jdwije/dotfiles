@@ -19,13 +19,8 @@ brew cask info this-is-somewhat-annoying 2>/dev/null
 # Homebrew casks
 casks=(
   # Applications
-  firefox
   google-chrome
   hex-fiend
-  iterm2
-  spotify
-  steam
-  teamspeak-client
   virtualbox
   vlc
 )

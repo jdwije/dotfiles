@@ -8,10 +8,7 @@ is_osx || return 1
 recipes=(
   bash
   man2html
-  mercurial
   nmap
-  the_silver_searcher
-  emacs
   ispell
 )
 

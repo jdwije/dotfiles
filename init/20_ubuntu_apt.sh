@@ -12,13 +12,14 @@ packages=(
   cowsay
   git-core
   libssl-dev
-  mercurial
   nmap
   sl
   telnet
   tree
   emacs24
   xclip
+  htop
+  multitail
 )
 
 packages=($(setdiff "${packages[*]}" "$(dpkg --get-selections | grep -v deinstall | awk '{print $1}')"))
