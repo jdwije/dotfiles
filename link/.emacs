@@ -133,7 +133,6 @@
       indent-tabs-mode nil)
 (setq ring-bell-function 'ignore)
 (setq column-number-mode t)
-(tool-bar-mode -1)
 (auto-compression-mode 1)
 
 ;; ispell setup
@@ -150,6 +149,10 @@
 (if window-system
     (load-theme 'evenhold t)
   (load-theme 'wombat t))
+
+(if window-system
+    (tool-bar-mode -1)
+  nil)
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
