@@ -2,8 +2,8 @@
 ;;; EMACS --- jdw's emacs config file
 ;;; 
 ;;; This is my emacs config. Hack away at it to your liking! I've copied
-;;; bits and pieces of it from other smart folks and added my own flavour
-;;; to it. Here's a list of my sources. 
+;;; bits and pieces of it from other, more wiser folks and added my own
+;;; customizations to it. Here's a list of my sources. 
 ;;;
 ;;; INSPIRATION:
 ;;; - Steve Yeggie: http://steve.yegge.googlepages.com/my-dot-emacs-file
@@ -39,7 +39,7 @@
 
 (defvar default-packages
   '(auto-complete
-    coffee-mode 
+    coffee-mode
     dash
     flycheck 
     flymake-easy
@@ -51,7 +51,6 @@
     key-chord
     less-css-mode
     list-utils
-    yasnippet
     markdown-mode
     markdown-toc
     multiple-cursors
@@ -68,7 +67,8 @@
     smartparens
     web-mode
     yaml-mode
-    yari)
+    yari
+    yasnippet)
   "A list of packages to ensure are installed at launch.")
 
 (defun default-packages-installed-p ()
