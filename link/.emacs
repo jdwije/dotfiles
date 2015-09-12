@@ -153,14 +153,14 @@
       indent-tabs-mode nil)
 (setq ring-bell-function 'ignore)
 (setq column-number-mode t)
+(tool-bar-mode -1)
+(auto-compression-mode 1)
 
 ;; ispell setup
 (if (eq system-type 'darwin)
     (setq-default ispell-program-name "/usr/local/bin/aspell")
   (setq-default ispell-program-name "/usr/bin/aspell"))
 (setq-default ispell-list-command "list")
-
-(defalias 'yes-or-no-p 'y-or-n-p)
 
 ;;;;;;;;;;;
 ;; LOOKS ;;
@@ -202,6 +202,20 @@
           (rename-buffer new-name)
           (set-visited-file-name new-name)
           (set-buffer-modified-p nil))))))
+
+;; moves file underlying buffer and updates the buffer path accordingly
+(defun move-buffer-file (dir)
+ "Moves both current buffer and file it's visiting to DIR." (interactive "DNew directory: ")
+ (let* ((name (buffer-name))
+	 (filename (buffer-file-name))
+	 (dir
+	 (if (string-match dir "\\(?:/\\|\\\\)$")
+	 (substring dir 0 -1) dir))
+	 (newname (concat dir "/" name)))
+
+ (if (not filename)
+	(message "Buffer '%s' is not visiting a file!" name)
+ (progn 	(copy-file filename newname 1) 	(delete-file filename) 	(set-visited-file-name newname) 	(set-buffer-modified-p nil) 	t)))) 
 
 ;; function to bind ri ruby inline documentation to a key
 (defun ri-bind-key ()
@@ -328,6 +342,8 @@ Uses `current-date-time-format' for the formatting the date/time."
 ;; replace backspace with backwards kill word
 (global-set-key (kbd "DEL") 'backward-kill-word)
 (global-set-key (kbd "M-DEL") 'backward-delete-char)
+(global-set-key (kbd "C-c qr") 'query-replace-regexp)
+(global-set-key (kbd "C-c df") 'vc-diff)
 
 ; set f5 + f6 to horizontal window size. set f7 + f8 to vertical window size.
 (global-set-key (kbd "<f5>") 'shrink-window-horizontally)
@@ -337,6 +353,8 @@ Uses `current-date-time-format' for the formatting the date/time."
 (define-key prog-mode-map (kbd "M-RET") 'emr-show-refactor-menu)
 (global-set-key "\C-c\C-t" 'insert-current-date-time)
 ;; (global-set-key "\C-c\C-t" 'insert-current-time)
+
+(defalias 'yes-or-no-p 'y-or-n-p)
 
 ;;;;;;;;;;;
 ;; HOOKS ;;
