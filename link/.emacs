@@ -367,6 +367,35 @@ Uses `current-date-time-format' for the formatting the date/time."
 (add-hook 'ruby-mode-hook 'ri-bind-key)
 (add-hook 'after-init-hook 'global-flycheck-mode)
 
+
+;;;;;;;;;;;;;;;;;;;
+;; SPLASH SCREEN ;;
+;;;;;;;;;;;;;;;;;;;
+
+(setq splash-art "
+
+welcome to...
+
+
+ ▄▄▄██▀▀▀▓█████▄  █     █░  ██████    ▓█████  ███▄ ▄███▓ ▄▄▄       ▄████▄    ██████ 
+   ▒██   ▒██▀ ██▌▓█░ █ ░█░▒██    ▒    ▓█   ▀ ▓██▒▀█▀ ██▒▒████▄    ▒██▀ ▀█  ▒██    ▒ 
+   ░██   ░██   █▌▒█░ █ ░█ ░ ▓██▄      ▒███   ▓██    ▓██░▒██  ▀█▄  ▒▓█    ▄ ░ ▓██▄   
+▓██▄██▓  ░▓█▄   ▌░█░ █ ░█   ▒   ██▒   ▒▓█  ▄ ▒██    ▒██ ░██▄▄▄▄██ ▒▓▓▄ ▄██▒  ▒   ██▒
+ ▓███▒   ░▒████▓ ░░██▒██▓ ▒██████▒▒   ░▒████▒▒██▒   ░██▒ ▓█   ▓██▒▒ ▓███▀ ░▒██████▒▒
+ ▒▓▒▒░    ▒▒▓  ▒ ░ ▓░▒ ▒  ▒ ▒▓▒ ▒ ░   ░░ ▒░ ░░ ▒░   ░  ░ ▒▒   ▓▒█░░ ░▒ ▒  ░▒ ▒▓▒ ▒ ░
+ ▒ ░▒░    ░ ▒  ▒   ▒ ░ ░  ░ ░▒  ░ ░    ░ ░  ░░  ░      ░  ▒   ▒▒ ░  ░  ▒   ░ ░▒  ░ ░
+ ░ ░ ░    ░ ░  ░   ░   ░  ░  ░  ░        ░   ░      ░     ░   ▒   ░        ░  ░  ░  
+ ░   ░      ░        ░          ░        ░  ░       ░         ░  ░░ ░            ░  
+          ░                                                       ░                 ")
+
+
+(get-buffer-create "*splash*")
+(switch-to-buffer "*splash*")
+(insert-current-date-time)
+(insert splash-art)
+(beginning-of-buffer)
+(read-only-mode)
+
 (provide '.emacs)
 ;;; .emacs ends here
 
