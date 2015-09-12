@@ -159,14 +159,19 @@
     (setq-default ispell-program-name "/usr/local/bin/aspell")
   (setq-default ispell-program-name "/usr/bin/aspell"))
 (setq-default ispell-list-command "list")
-;; (setq default-ispell-program-name "aspell")
 
 (defalias 'yes-or-no-p 'y-or-n-p)
+
+;;;;;;;;;;;
+;; LOOKS ;;
+;;;;;;;;;;;
 
 ;; set a theme for GUI and terminal modes
 (if window-system
     (load-theme 'evenhold t)
   (load-theme 'wombat t))
+
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; USER FUNCTIONS ;;
