@@ -18,7 +18,7 @@
 # Ignore any file with LOCAL in the name (good for per-machine vars/functions)
 *LOCAL*
 
-link/.emacs.d/*
+link/.emacs.d/elpa/*
+!link/.emacs.d/elpa/.gitkeep
 !link/.emacs.d/cl-lib
 !link/.emacs.d/evenhold-theme.el
-
