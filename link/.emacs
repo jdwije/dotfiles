@@ -31,63 +31,44 @@
 (let ((default-directory "~/.emacs.d/elpa/"))
   (normal-top-level-add-subdirs-to-load-path))
 
+(when (not (package-installed-p 'cl-lib))
+  (package-install 'cl-lib))
+
 (add-to-list 'load-path "~/.emacs.d/cl-lib/")
 (require 'cl-lib)
 
 (defvar default-packages
-  '(ac-ispell
-    auto-complete
-    base16-theme 
-    bongo 
+  '(auto-complete
     coffee-mode 
     dash
-    discover 
-    emr 
-    epl
-    figlet 
     flycheck 
     flymake-easy
     flymake-jshint 
     flymake-jslint
     flymake-php
     flymake-ruby
-    flymake-yaml
-    gandalf-theme
-    hc-zenburn-theme
     inf-ruby
     key-chord
     less-css-mode
     list-utils
-    makey
+    yasnippet
     markdown-mode
-    markdown-mode+
     markdown-toc
-    mmm-mode
-    monochrome-theme
     multiple-cursors
-    noctilux-theme
-    organic-green-theme
     paredit
-    pastels-on-dark-theme
-    php+-mode
-    php-auto-yasnippets
     php-mode
     pkg-info
     popup
     projectile
-    redshank
     ruby-block
-    ruby-dev
     ruby-electric
-    ruby-refactor
     rw-hunspell
     s
     scss-mode
     smartparens
     web-mode
     yaml-mode
-    yari
-    zenburn-theme)
+    yari)
   "A list of packages to ensure are installed at launch.")
 
 (defun default-packages-installed-p ()
@@ -114,13 +95,12 @@
 (require 'smartparens-config)
 (require 'yasnippet)
 (require 'multiple-cursors)
-(require 'php-auto-yasnippets)
 (require 'auto-complete-config)
 
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/dict")
 (ac-config-default)
 (ac-complete-yasnippet)
-(payas/ac-setup)
+;;(payas/ac-setup)
 (put 'downcase-region 'disabled nil)
 (autoload 'inf-ruby-minor-mode "inf-ruby" "Run an inferior Ruby process" t)
 
@@ -333,7 +313,6 @@ Uses `current-date-time-format' for the formatting the date/time."
 
 ;; function shortcuts
 (global-set-key (kbd "C-s-,") 'toggle-fullscreen)
-(define-key php-mode-map (kbd "C-c C-y") 'yas/create-php-snippet)
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
