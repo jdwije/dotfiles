@@ -26,6 +26,8 @@
 (add-to-list 'package-archives
              '("elpa" . "http://tromey.com/elpa/"))
 
+(setq package-archive-enable-alist '(("melpa" deft magit)))
+
 (let ((default-directory "~/.emacs.d/elpa/"))
   (normal-top-level-add-subdirs-to-load-path))
 
@@ -33,7 +35,59 @@
 (require 'cl-lib)
 
 (defvar default-packages
-  '(ac-ispell auto-complete base16-theme bongo coffee-mode discover emr figlet flycheck flymake-jshint flymake-jslint flymake-php flymake-ruby flymake-yaml flymake-easy gandalf-theme hc-zenburn-theme inf-ruby key-chord less-css-mode list-utils makey markdown-mode+ markdown-toc markdown-mode mmm-mode monochrome-theme multiple-cursors noctilux-theme zenburn-theme organic-green-theme paredit pastels-on-dark-theme php+-mode php-mode popup projectile pkg-info epl redshank ruby-electric rw-hunspell s scss-mode smartparens dash web-mode yaml-mode yari php-auto-yasnippets ruby-dev ruby-refactor ruby-block)
+  '(ac-ispell
+    auto-complete
+    base16-theme 
+    bongo 
+    coffee-mode 
+    dash
+    discover 
+    emr 
+    epl
+    figlet 
+    flycheck 
+    flymake-easy
+    flymake-jshint 
+    flymake-jslint
+    flymake-php
+    flymake-ruby
+    flymake-yaml
+    gandalf-theme
+    hc-zenburn-theme
+    inf-ruby
+    key-chord
+    less-css-mode
+    list-utils
+    makey
+    markdown-mode
+    markdown-mode+
+    markdown-toc
+    mmm-mode
+    monochrome-theme
+    multiple-cursors
+    noctilux-theme
+    organic-green-theme
+    paredit
+    pastels-on-dark-theme
+    php+-mode
+    php-auto-yasnippets
+    php-mode
+    pkg-info
+    popup
+    projectile
+    redshank
+    ruby-block
+    ruby-dev
+    ruby-electric
+    ruby-refactor
+    rw-hunspell
+    s
+    scss-mode
+    smartparens
+    web-mode
+    yaml-mode
+    yari
+    zenburn-theme)
   "A list of packages to ensure are installed at launch.")
 
 (defun default-packages-installed-p ()
@@ -51,6 +105,10 @@
     (when (not (package-installed-p p))
       (package-install p))))
 
+
+;;;;;;;;;;;;;;;;;;;
+;; PACKAGE SETUP ;;
+;;;;;;;;;;;;;;;;;;;
 
 (require 'auto-complete)
 (require 'smartparens-config)
@@ -87,7 +145,28 @@
 (setq diary-file "~/Organiser/Diary")
 (setq org-agenda-files '("~/Organiser/agendas") )
 (setq ruby-insert-encoding-magic-comment nil)
-(setq default-ispell-program-name "aspell")
+(setq flyspell-issue-welcome-flag nil)
+(setq inhibit-splash-screen t
+      initial-scratch-message nil
+      initial-major-mode 'org-mode)
+(setq tab-width 4
+      indent-tabs-mode nil)
+(setq ring-bell-function 'ignore)
+(setq column-number-mode t)
+
+;; ispell setup
+(if (eq system-type 'darwin)
+    (setq-default ispell-program-name "/usr/local/bin/aspell")
+  (setq-default ispell-program-name "/usr/bin/aspell"))
+(setq-default ispell-list-command "list")
+;; (setq default-ispell-program-name "aspell")
+
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+;; set a theme for GUI and terminal modes
+(if window-system
+    (load-theme 'evenhold t)
+  (load-theme 'wombat t))
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; USER FUNCTIONS ;;
@@ -229,8 +308,6 @@ Uses `current-date-time-format' for the formatting the date/time."
    "Return a string which is a concatenation of all elements of the list separated by spaces" 
    (mapconcat #'(lambda (obj) (format "%s" obj)) list " "))
 
-
-
 ;;;;;;;;;;;;;;;;;;
 ;; KEY BINDINGS ;;
 ;;;;;;;;;;;;;;;;;;
@@ -255,8 +332,6 @@ Uses `current-date-time-format' for the formatting the date/time."
 (define-key prog-mode-map (kbd "M-RET") 'emr-show-refactor-menu)
 (global-set-key "\C-c\C-t" 'insert-current-date-time)
 ;; (global-set-key "\C-c\C-t" 'insert-current-time)
-
-
 
 ;;;;;;;;;;;
 ;; HOOKS ;;

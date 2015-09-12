@@ -9,6 +9,7 @@
 	c-electric-pound
 	c-electric-slash
 	calendar-scroll-left
+	electric-newline-and-maybe-indent
 	forward-sentence
 	go-mode-insert-and-indent
 	indent-for-tab-command
