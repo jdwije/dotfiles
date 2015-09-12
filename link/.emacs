@@ -25,6 +25,8 @@
              '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives
              '("elpa" . "http://tromey.com/elpa/"))
+(add-to-list 'package-archives
+	     '("melpa" . "http://melpa.milkbox.net/packages/"))
 
 (setq package-archive-enable-alist '(("melpa" deft magit)))
 
@@ -41,12 +43,14 @@
   '(auto-complete
     coffee-mode
     dash
+    emr
     flycheck 
     flymake-easy
     flymake-jshint 
     flymake-jslint
     flymake-php
     flymake-ruby
+    go-mode
     inf-ruby
     key-chord
     less-css-mode
