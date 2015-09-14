@@ -1,2 +1,0 @@
-machine imap.gmail.com login jason.wijegooneratne@temando.com port imaps
-machine smtp.gmail.com login jason.wijegooneratne@temando.com port 587
