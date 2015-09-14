@@ -27,6 +27,8 @@
              '("elpa" . "http://tromey.com/elpa/"))
 (add-to-list 'package-archives
 	     '("melpa" . "http://melpa.milkbox.net/packages/"))
+(add-to-list 'load-path
+              "~/.emacs.d/src/yasnippet")
 
 (setq package-archive-enable-alist '(("melpa" deft magit)))
 
@@ -59,6 +61,7 @@
     markdown-toc
     multiple-cursors
     paredit
+    php-auto-yasnippets
     php-mode
     pkg-info
     popup
@@ -94,17 +97,16 @@
 ;;;;;;;;;;;;;;;;;;;
 ;; PACKAGE SETUP ;;
 ;;;;;;;;;;;;;;;;;;;
-
+(require 'yasnippet)
 (require 'auto-complete)
 (require 'smartparens-config)
-(require 'yasnippet)
 (require 'multiple-cursors)
 (require 'auto-complete-config)
+(require 'php-auto-yasnippets)
 
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/dict")
 (ac-config-default)
 (ac-complete-yasnippet)
-;;(payas/ac-setup)
 (put 'downcase-region 'disabled nil)
 (autoload 'inf-ruby-minor-mode "inf-ruby" "Run an inferior Ruby process" t)
 
@@ -138,6 +140,8 @@
 (setq ring-bell-function 'ignore)
 (setq column-number-mode t)
 (auto-compression-mode 1)
+(setq ac-auto-start 2)
+(setq ac-use-menu-map t)
 
 ;; ispell setup
 (if (eq system-type 'darwin)
@@ -319,29 +323,41 @@ Uses `current-date-time-format' for the formatting the date/time."
 ;;;;;;;;;;;;;;;;;;
 
 ;; function shortcuts
-(global-set-key (kbd "C-s-,") 'toggle-fullscreen)
-(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-(global-set-key (kbd "C-c qr") 'query-replace-regexp)
-(global-set-key (kbd "C-c df") 'vc-diff)
-(global-set-key (kbd "C-c cf") 'vc-next-action)
-(global-set-key (kbd "C-c fg") 'rgrep)
-(global-set-key (kbd "C-c ff") 'find-name-dired)
 
 ;; replace backspace with backwards kill word
 (global-set-key (kbd "DEL") 'backward-kill-word)
 (global-set-key (kbd "M-DEL") 'backward-delete-char)
+
+;; multiple cursors
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
 ; set f5 + f6 to horizontal window size. set f7 + f8 to vertical window size.
 (global-set-key (kbd "<f5>") 'shrink-window-horizontally)
 (global-set-key (kbd "<f6>") 'enlarge-window-horizontally)
 (global-set-key (kbd "<f7>") 'shrink-window)
 (global-set-key (kbd "<f8>") 'enlarge-window)
+(global-set-key (kbd "C-s-,") 'toggle-fullscreen)
+
+;; utility
 (define-key prog-mode-map (kbd "M-RET") 'emr-show-refactor-menu)
 (global-set-key "\C-c\C-t" 'insert-current-date-time)
-;; (global-set-key "\C-c\C-t" 'insert-current-time)
+(global-set-key (kbd "C-c qr") 'query-replace-regexp)
+(global-set-key (kbd "C-c df") 'vc-diff)
+(global-set-key (kbd "C-c cf") 'vc-next-action)
+(global-set-key (kbd "C-c fg") 'rgrep)
+(global-set-key (kbd "C-c ff") 'find-name-dired)
+
+;; auto-complete
+(define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
+(define-key ac-completing-map (kbd "TAB") 'ac-complete)
+(define-key ac-completing-map (kbd "RET") nil)
+
+;;;;;;;;;;;;;
+;; ALIASES ;;
+;;;;;;;;;;;;;
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 

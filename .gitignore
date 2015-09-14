@@ -22,3 +22,5 @@ link/.emacs.d/elpa/*
 !link/.emacs.d/elpa/.gitkeep
 !link/.emacs.d/cl-lib
 !link/.emacs.d/evenhold-theme.el
+link/.emacs.d/.mc-lists.el
+link/.emacs.d/ac-comphist.dat
