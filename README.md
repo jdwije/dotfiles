@@ -1,6 +1,9 @@
 # Dotfiles
 
-My OSX / Ubuntu dotfiles.
+This is a modified version of Ben Alman's [dotfiles](https://github.com/cowboy/dotfiles). Here are the key differences:
+
+- Stipped software installs to the bare minimum required for development to speed things up
+- Emacs not VIM, this repo includes my own .emacs configuration too
 
 ## How the "dotfiles" command works
 
