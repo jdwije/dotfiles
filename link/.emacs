@@ -26,7 +26,7 @@
 (add-to-list 'package-archives
              '("elpa" . "http://tromey.com/elpa/"))
 (add-to-list 'package-archives
-	     '("melpa" . "http://melpa.milkbox.net/packages/"))
+	     '("melpa" . "http://melpa.milkbox.net/packages/"))              
 (add-to-list 'load-path
               "~/.emacs.d/src/yasnippet")
 
@@ -44,6 +44,7 @@
 (defvar default-packages
   '(auto-complete
     coffee-mode
+    column-enforce-mode
     dash
     emr
     flycheck 
