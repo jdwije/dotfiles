@@ -136,7 +136,7 @@
 (setq inhibit-splash-screen t
       initial-scratch-message nil
       initial-major-mode 'org-mode)
-(setq tab-width 4
+(setq tab-width 8
       indent-tabs-mode nil)
 (setq ring-bell-function 'ignore)
 (setq column-number-mode t)
@@ -281,7 +281,7 @@ Uses `current-date-time-format' for the formatting the date/time."
 ;; php coding standards fixer
 (defun php-cs-fix ()
   (interactive)
-  (progn (shell-command (concat "php-cs-fixer fix " (buffer-file-name) " -v"))
+  (progn (shell-command (concat "phpcbf " (buffer-file-name)))
 	 (revert-buffer nil t)))
 
 ;; zip/unzip files in dired mode
