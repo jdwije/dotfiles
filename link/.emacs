@@ -1,9 +1,9 @@
 
 ;;; EMACS --- jdw's emacs config file
-;;; 
+;;;
 ;;; This is my emacs config. Hack away at it to your liking! I've copied
 ;;; bits and pieces of it from other, more wiser folks and added my own
-;;; customizations to it. Here's a list of my sources. 
+;;; customizations to it. Here's a list of my sources.
 ;;;
 ;;; INSPIRATION:
 ;;; - Steve Yeggie: http://steve.yegge.googlepages.com/my-dot-emacs-file
@@ -26,7 +26,7 @@
 (add-to-list 'package-archives
              '("elpa" . "http://tromey.com/elpa/"))
 (add-to-list 'package-archives
-	     '("melpa" . "http://melpa.milkbox.net/packages/"))              
+             '("melpa" . "http://melpa.milkbox.net/packages/"))
 (add-to-list 'load-path
               "~/.emacs.d/src/yasnippet")
 
@@ -47,13 +47,14 @@
     column-enforce-mode
     dash
     emr
-    flycheck 
+    flycheck
     flymake-easy
-    flymake-jshint 
+    flymake-jshint
     flymake-jslint
     flymake-php
     flymake-ruby
     go-mode
+    highlight-chars
     inf-ruby
     key-chord
     less-css-mode
@@ -104,6 +105,7 @@
 (require 'multiple-cursors)
 (require 'auto-complete-config)
 (require 'php-auto-yasnippets)
+(require 'highlight-chars)
 
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/dict")
 (ac-config-default)
@@ -117,7 +119,7 @@
 
 (setq rcirc-server-alist
       '(("irc.freenode.net" :port 6697 :encryption tls
-	 :channels ("#rcirc" "#emacs" "#emacswiki"))))
+         :channels ("#rcirc" "#emacs" "#emacswiki"))))
 (setq gnus-thread-sort-functions
       '(gnus-thread-sort-by-number
         gnus-thread-sort-by-date))
@@ -199,15 +201,15 @@
 (defun move-buffer-file (dir)
  "Moves both current buffer and file it's visiting to DIR." (interactive "DNew directory: ")
  (let* ((name (buffer-name))
-	 (filename (buffer-file-name))
-	 (dir
-	 (if (string-match dir "\\(?:/\\|\\\\)$")
-	 (substring dir 0 -1) dir))
-	 (newname (concat dir "/" name)))
+         (filename (buffer-file-name))
+         (dir
+         (if (string-match dir "\\(?:/\\|\\\\)$")
+         (substring dir 0 -1) dir))
+         (newname (concat dir "/" name)))
 
  (if (not filename)
-	(message "Buffer '%s' is not visiting a file!" name)
- (progn 	(copy-file filename newname 1) 	(delete-file filename) 	(set-visited-file-name newname) 	(set-buffer-modified-p nil) 	t)))) 
+        (message "Buffer '%s' is not visiting a file!" name)
+ (progn         (copy-file filename newname 1)  (delete-file filename)  (set-visited-file-name newname)         (set-buffer-modified-p nil)     t)))) 
 
 ;; function to bind ri ruby inline documentation to a key
 (defun ri-bind-key ()
@@ -282,11 +284,11 @@ Uses `current-date-time-format' for the formatting the date/time."
 (defun php-cs-fix ()
   (interactive)
   (progn (shell-command (concat "phpcbf " (buffer-file-name)))
-	 (revert-buffer nil t)))
+         (revert-buffer nil t)))
 
 ;; zip/unzip files in dired mode
 (eval-after-load "dired-aux"
-   '(add-to-list 'dired-compress-file-suffixes 
+   '(add-to-list 'dired-compress-file-suffixes
                  '("\\.zip\\'" ".zip" "unzip")))
 
 (eval-after-load "dired"
@@ -297,11 +299,11 @@ Uses `current-date-time-format' for the formatting the date/time."
 
   ;; create the zip file
   (let ((zip-file (if (string-match ".zip$" zip-file) zip-file (concat zip-file ".zip"))))
-    (shell-command 
-     (concat "zip " 
+    (shell-command
+     (concat "zip "
              zip-file
              " "
-             (concat-string-list 
+             (concat-string-list
               (mapcar
                #'(lambda (filename)
                   (file-name-nondirectory filename))
@@ -315,8 +317,8 @@ Uses `current-date-time-format' for the formatting the date/time."
   ;; (dired-mark-files-regexp (filename-to-regexp zip-file))
   )
 
-(defun concat-string-list (list) 
-   "Return a string which is a concatenation of all elements of the list separated by spaces" 
+(defun concat-string-list (list)
+   "Return a string which is a concatenation of all elements of the list separated by spaces"
    (mapconcat #'(lambda (obj) (format "%s" obj)) list " "))
 
 ;;;;;;;;;;;;;;;;;;
@@ -372,7 +374,9 @@ Uses `current-date-time-format' for the formatting the date/time."
 (add-hook 'ruby-mode-hook 'inf-ruby-minor-mode)
 (add-hook 'ruby-mode-hook 'ri-bind-key)
 (add-hook 'after-init-hook 'global-flycheck-mode)
-
+(add-hook 'font-lock-mode-hook 'column-enforce-mode)
+(add-hook 'font-lock-mode-hook 'hc-highlight-tabs)
+(add-hook 'font-lock-mode-hook 'hc-highlight-trailing-whitespace)
 
 ;;;;;;;;;;;;;;;;;;;
 ;; SPLASH SCREEN ;;
@@ -383,14 +387,14 @@ Uses `current-date-time-format' for the formatting the date/time."
 welcome to...
 
 
- ▄▄▄██▀▀▀▓█████▄  █     █░  ██████    ▓█████  ███▄ ▄███▓ ▄▄▄       ▄████▄    ██████ 
-   ▒██   ▒██▀ ██▌▓█░ █ ░█░▒██    ▒    ▓█   ▀ ▓██▒▀█▀ ██▒▒████▄    ▒██▀ ▀█  ▒██    ▒ 
-   ░██   ░██   █▌▒█░ █ ░█ ░ ▓██▄      ▒███   ▓██    ▓██░▒██  ▀█▄  ▒▓█    ▄ ░ ▓██▄   
-▓██▄██▓  ░▓█▄   ▌░█░ █ ░█   ▒   ██▒   ▒▓█  ▄ ▒██    ▒██ ░██▄▄▄▄██ ▒▓▓▄ ▄██▒  ▒   ██▒
- ▓███▒   ░▒████▓ ░░██▒██▓ ▒██████▒▒   ░▒████▒▒██▒   ░██▒ ▓█   ▓██▒▒ ▓███▀ ░▒██████▒▒
- ▒▓▒▒░    ▒▒▓  ▒ ░ ▓░▒ ▒  ▒ ▒▓▒ ▒ ░   ░░ ▒░ ░░ ▒░   ░  ░ ▒▒   ▓▒█░░ ░▒ ▒  ░▒ ▒▓▒ ▒ ░
- ▒ ░▒░    ░ ▒  ▒   ▒ ░ ░  ░ ░▒  ░ ░    ░ ░  ░░  ░      ░  ▒   ▒▒ ░  ░  ▒   ░ ░▒  ░ ░
- ░ ░ ░    ░ ░  ░   ░   ░  ░  ░  ░        ░   ░      ░     ░   ▒   ░        ░  ░  ░  
+ ▄▄▄██▀▀▀▓█████▄  █     █░ ░ ██████    ▓█████  ███▄ ▄███▓ ▄▄▄       ▄████▄    ██████ 
+   ▒██   ▒██▀ ██▌▓█░ █ ░█░  ██    ▒    ▓█   ▀ ▓██▒▀█▀ ██▒▒████▄    ▒██▀ ▀█  ▒██    ▒ 
+   ░██   ░██   █▌▒█░ █ ░█    ▓██▄      ▒███   ▓██    ▓██░▒██  ▀█▄  ▒▓█    ▄ ░ ▓██▄   
+▓██▄██▓  ░▓█▄   ▌░█░ █ ░█    ▒   ██▒   ▒▓█  ▄ ▒██    ▒██ ░██▄▄▄▄██ ▒▓▓▄ ▄██▒  ▒   ██▒
+ ▓███▒   ░▒████▓ ░░██▒██▓  ▒██████▒▒   ░▒████▒▒██▒   ░██▒ ▓█   ▓██▒▒ ▓███▀ ░▒██████▒▒
+ ▒▓▒▒░    ▒▒▓  ▒ ░ ▓░▒ ▒   ▒ ▒▓▒ ▒ ░   ░░ ▒░ ░░ ▒░   ░  ░ ▒▒   ▓▒█░░ ░▒ ▒  ░▒ ▒▓▒ ▒ ░
+ ▒ ░▒░    ░ ▒  ▒   ▒ ░ ░   ░ ░▒  ░ ░    ░ ░  ░░  ░      ░  ▒   ▒▒ ░  ░  ▒   ░ ░▒  ░ ░
+ ░ ░ ░    ░ ░  ░   ░   ░   ░  ░  ░        ░   ░      ░     ░   ▒   ░        ░  ░  ░  
  ░   ░      ░        ░          ░        ░  ░       ░         ░  ░░ ░            ░  
           ░                                                       ░                 ")
 
