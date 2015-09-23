@@ -350,6 +350,7 @@ Uses `current-date-time-format' for the formatting the date/time."
 (global-set-key (kbd "C-c cf") 'vc-next-action)
 (global-set-key (kbd "C-c fg") 'rgrep)
 (global-set-key (kbd "C-c ff") 'find-name-dired)
+(global-set-key (kbd "C-c z") 'zap-to-char)
 
 ;; auto-complete
 (define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
