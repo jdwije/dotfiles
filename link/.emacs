@@ -260,8 +260,8 @@ Uses `current-date-time-format' for the formatting the date/time."
 
 
 ;;  in buffer build system
-(setq build-buffer "*terminal*")
-(setq build-cmd "vendor/bin/phpspec run\n")
+(setq build-buffer "*ci-shell*")
+(setq build-cmd "ant\n")
 
 (defun build-in-buffer ()
   "Send a build command to a running shell"
@@ -320,6 +320,21 @@ Uses `current-date-time-format' for the formatting the date/time."
 (defun concat-string-list (list)
    "Return a string which is a concatenation of all elements of the list separated by spaces"
    (mapconcat #'(lambda (obj) (format "%s" obj)) list " "))
+
+(defun xml-pretty-region (begin end)
+  "Pretty format XML markup in region. You need to have nxml-mode
+http://www.emacswiki.org/cgi-bin/wiki/NxmlMode installed to do
+this.  The function inserts linebreaks to separate tags that have
+nothing but whitespace between them.  It then indents the markup
+by using nxml's indentation rules."
+  (interactive "r")
+  (save-excursion
+      (nxml-mode)
+      (goto-char begin)
+      (while (search-forward-regexp "\>[ \\t]*\<" nil t) 
+        (backward-char) (insert "\n"))
+      (indent-region begin end))
+  (message "Ah, much better!"))
 
 ;;;;;;;;;;;;;;;;;;
 ;; KEY BINDINGS ;;
