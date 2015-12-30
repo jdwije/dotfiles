@@ -47,6 +47,7 @@
     column-enforce-mode
     dash
     emr
+    fish-mode
     flycheck
     flymake-easy
     flymake-jshint
@@ -106,12 +107,17 @@
 (require 'auto-complete-config)
 (require 'php-auto-yasnippets)
 (require 'highlight-chars)
+(require 'flymake-phpcs)
 
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/dict")
 (ac-config-default)
 (ac-complete-yasnippet)
 (put 'downcase-region 'disabled nil)
 (autoload 'inf-ruby-minor-mode "inf-ruby" "Run an inferior Ruby process" t)
+;; Show the name of sniffs in PHP code warnings (eg show
+;; "Generic.CodeAnalysis.VariableAnalysis.UnusedVariable" in an unused
+;; variable warning)
+(setq flymake-phpcs-show-rule t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; USER CONFIGURABLES ;;
@@ -331,7 +337,7 @@ by using nxml's indentation rules."
   (save-excursion
       (nxml-mode)
       (goto-char begin)
-      (while (search-forward-regexp "\>[ \\t]*\<" nil t) 
+      (while (search-forward-regexp "\>[ \\t]*\<" nil t)
         (backward-char) (insert "\n"))
       (indent-region begin end))
   (message "Ah, much better!"))
