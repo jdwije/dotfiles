@@ -10,6 +10,7 @@ recipes=(
   man2html
   nmap
   ispell
+  sbcl
 )
 
 brew_install_recipes
