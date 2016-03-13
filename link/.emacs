@@ -42,11 +42,13 @@
 (require 'cl-lib)
 
 (defvar default-packages
-  '(auto-complete
+  '(auctex
+    auto-complete
     coffee-mode
     column-enforce-mode
     dash
     emr
+    feature-mode
     fish-mode
     flycheck
     flymake-easy
@@ -74,6 +76,7 @@
     rw-hunspell
     s
     scss-mode
+    slime
     smartparens
     web-mode
     yaml-mode
@@ -151,6 +154,19 @@
 (auto-compression-mode 1)
 (setq ac-auto-start 2)
 (setq ac-use-menu-map t)
+(setq-default fill-column 80) ;; 80 character rule
+
+;; slime setup
+(setq inferior-lisp-program "/usr/local/bin/sbcl")
+(setq slime-contribs '(slime-fancy))
+
+;; fix up path for LATEX on OSX
+(getenv "PATH")
+(setenv "PATH"
+        (concat
+         "/Library/TeX/texbin/pdflatex" ":"
+         (getenv "PATH")))
+
 
 ;; ispell setup
 (if (eq system-type 'darwin)
