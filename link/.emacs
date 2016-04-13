@@ -149,6 +149,7 @@
       initial-major-mode 'org-mode)
 (setq tab-width 8
       indent-tabs-mode nil)
+(setq-default indent-tabs-mode nil)
 (setq ring-bell-function 'ignore)
 (setq column-number-mode t)
 (auto-compression-mode 1)
@@ -157,8 +158,12 @@
 (setq-default fill-column 80) ;; 80 character rule
 
 ;; slime setup
+(load (expand-file-name "~/quicklisp/slime-helper.el"))
 (setq inferior-lisp-program "/usr/local/bin/sbcl")
 (setq slime-contribs '(slime-fancy))
+
+;; JS setup
+(setq js-indent-level 2)
 
 ;; fix up path for LATEX on OSX
 (getenv "PATH")
