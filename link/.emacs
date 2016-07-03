@@ -30,6 +30,9 @@
 (add-to-list 'load-path
               "~/.emacs.d/src/yasnippet")
 
+(add-to-list 'load-path
+             ".emacs.d/eslint-flycheck")
+
 (setq package-archive-enable-alist '(("melpa" deft magit)))
 
 (let ((default-directory "~/.emacs.d/elpa/"))
@@ -41,6 +44,9 @@
 (add-to-list 'load-path "~/.emacs.d/cl-lib/")
 (require 'cl-lib)
 
+(add-to-list 'load-path "~/.emacs.d/eslint-flycheck/")
+(require 'eslint-flycheck)
+
 (defvar default-packages
   '(auctex
     auto-complete
@@ -48,6 +54,7 @@
     column-enforce-mode
     dash
     emr
+    exec-path-from-shell
     feature-mode
     fish-mode
     flycheck
@@ -57,8 +64,11 @@
     flymake-php
     flymake-ruby
     go-mode
+    js2-mode
+    ac-js2
     highlight-chars
     inf-ruby
+    jade-mode
     key-chord
     less-css-mode
     list-utils
@@ -78,6 +88,7 @@
     scss-mode
     slime
     smartparens
+    use-package
     web-mode
     yaml-mode
     yari
@@ -172,6 +183,9 @@
          "/Library/TeX/texbin/pdflatex" ":"
          (getenv "PATH")))
 
+;; add /usr/local/bin to execution paths
+;; (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
+;; (setq exec-path (append exec-path '("/usr/local/bin")))
 
 ;; ispell setup
 (if (eq system-type 'darwin)
@@ -363,6 +377,44 @@ by using nxml's indentation rules."
       (indent-region begin end))
   (message "Ah, much better!"))
 
+
+;; adjust indents for web-mode to 2 spaces
+(defun my-web-mode-hook ()
+  "Hooks for Web mode. Adjust indents"
+  ;;; http://web-mode.org/
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2))
+
+
+;; https://github.com/purcell/exec-path-from-shell
+;; only need exec-path-from-shell on OSX
+;; this hopefully sets up path and other vars better
+(defun setup-paths-osx ()
+  (when (memq window-system '(mac ns))
+    (exec-path-from-shell-initialize)))
+
+;; Flycheck setup
+;; disable jshint since we prefer eslint checking
+(setq-default flycheck-disabled-checkers
+              (append flycheck-disabled-checkers
+                      '(javascript-jshint)))
+
+;; use eslint with web-mode for jsx files
+(flycheck-add-mode 'javascript-eslint 'web-mode)
+
+;; customize flycheck temp file prefix
+(setq-default flycheck-temp-prefix ".flycheck")
+
+;; javascript
+
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+
+(custom-set-variables  
+ '(js2-basic-offset 2)  
+ '(js2-bounce-indent-p t)  
+)
+
 ;;;;;;;;;;;;;;;;;;
 ;; KEY BINDINGS ;;
 ;;;;;;;;;;;;;;;;;;
@@ -411,11 +463,16 @@ by using nxml's indentation rules."
 ;; HOOKS ;;
 ;;;;;;;;;;;
 
+(add-hook 'after-init-hook 'setup-paths-osx)
+(add-hook 'web-mode-hook  'my-web-mode-hook)
 (add-hook 'prog-mode-hook 'emr-initialize)
 (add-hook 'after-init-hook #'smartparens-global-mode)
 (add-hook 'ruby-mode-hook 'inf-ruby-minor-mode)
 (add-hook 'ruby-mode-hook 'ri-bind-key)
 (add-hook 'after-init-hook 'global-flycheck-mode)
+
+;; (add-hook 'after-init-hook 'eslint-flycheck)
+
 (add-hook 'font-lock-mode-hook 'column-enforce-mode)
 (add-hook 'font-lock-mode-hook 'hc-highlight-tabs)
 (add-hook 'font-lock-mode-hook 'hc-highlight-trailing-whitespace)
@@ -441,12 +498,12 @@ welcome to...
           ░                                                       ░                 ")
 
 
-(get-buffer-create "*splash*")
-(switch-to-buffer "*splash*")
-(insert-current-date-time)
-(insert splash-art)
-(beginning-of-buffer)
-(read-only-mode)
+;; (get-buffer-create "*splash*")
+;; (switch-to-buffer "*splash*")
+;; (insert-current-date-time)
+;; (insert splash-art)
+;; (beginning-of-buffer)
+;; (read-only-mode)
 
 (provide '.emacs)
 ;;; .emacs ends here
