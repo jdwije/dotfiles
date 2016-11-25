@@ -1,4 +1,5 @@
 
+
 ;;; EMACS --- jdw's emacs config file
 ;;;
 ;;; This is my emacs config. Hack away at it to your liking! I've copied
@@ -394,6 +395,10 @@ by using nxml's indentation rules."
   (when (memq window-system '(mac ns))
     (exec-path-from-shell-initialize)))
 
+;;; Fix junk characters in shell-mode
+(add-hook 'shell-mode-hook 
+          'ansi-color-for-comint-mode-on)
+
 ;; Flycheck setup
 ;; disable jshint since we prefer eslint checking
 (setq-default flycheck-disabled-checkers
@@ -414,6 +419,11 @@ by using nxml's indentation rules."
  '(js2-basic-offset 2)  
  '(js2-bounce-indent-p t)  
 )
+
+;; wakatime
+(setq wakatime-api-key "2579cd0a-ac6b-4065-85f4-c1c2116d360a")
+(setq wakatime-cli-path "/usr/local/bin/wakatime")
+(setq wakatime-python-bin "/usr/local/bin/python")
 
 ;;;;;;;;;;;;;;;;;;
 ;; KEY BINDINGS ;;
@@ -451,7 +461,7 @@ by using nxml's indentation rules."
 ;; auto-complete
 (define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
 (define-key ac-completing-map (kbd "TAB") 'ac-complete)
-(define-key ac-completing-map (kbd "RET") nil)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   (define-key ac-completing-map (kbd "RET") nil)
 
 ;;;;;;;;;;;;;
 ;; ALIASES ;;
@@ -470,6 +480,7 @@ by using nxml's indentation rules."
 (add-hook 'ruby-mode-hook 'inf-ruby-minor-mode)
 (add-hook 'ruby-mode-hook 'ri-bind-key)
 (add-hook 'after-init-hook 'global-flycheck-mode)
+(add-hook 'after-init-hook 'global-wakatime-mode)
 
 ;; (add-hook 'after-init-hook 'eslint-flycheck)
 
