@@ -31,8 +31,7 @@
 (add-to-list 'load-path
               "~/.emacs.d/src/yasnippet")
 
-(add-to-list 'load-path
-             ".emacs.d/eslint-flycheck")
+;;(add-to-list 'load-path           ".emacs.d/eslint-flycheck")
 
 (setq package-archive-enable-alist '(("melpa" deft magit)))
 
@@ -45,14 +44,16 @@
 (add-to-list 'load-path "~/.emacs.d/cl-lib/")
 (require 'cl-lib)
 
-(add-to-list 'load-path "~/.emacs.d/eslint-flycheck/")
-(require 'eslint-flycheck)
+;; (add-to-list 'load-path "~/.emacs.d/eslint-flycheck/")
+;; (require 'eslint-flycheck)
 
 (defvar default-packages
-  '(auctex
+  '(ac-js2
+    auctex
     auto-complete
     coffee-mode
     column-enforce-mode
+    company
     dash
     emr
     exec-path-from-shell
@@ -60,16 +61,14 @@
     fish-mode
     flycheck
     flymake-easy
-    flymake-jshint
     flymake-jslint
     flymake-php
     flymake-ruby
     go-mode
-    js2-mode
-    ac-js2
     highlight-chars
     inf-ruby
     jade-mode
+    js2-mode
     key-chord
     less-css-mode
     list-utils
@@ -89,7 +88,9 @@
     scss-mode
     slime
     smartparens
+    tide
     use-package
+    wakatime-mode
     web-mode
     yaml-mode
     yari
@@ -122,7 +123,8 @@
 (require 'auto-complete-config)
 (require 'php-auto-yasnippets)
 (require 'highlight-chars)
-(require 'flymake-phpcs)
+(require 'flycheck)
+;; (require 'flymake-phpcs)
 
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/dict")
 (ac-config-default)
@@ -132,7 +134,7 @@
 ;; Show the name of sniffs in PHP code warnings (eg show
 ;; "Generic.CodeAnalysis.VariableAnalysis.UnusedVariable" in an unused
 ;; variable warning)
-(setq flymake-phpcs-show-rule t)
+;;(setq flymake-phpcs-show-rule t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; USER CONFIGURABLES ;;
@@ -187,6 +189,10 @@
 ;; add /usr/local/bin to execution paths
 ;; (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
 ;; (setq exec-path (append exec-path '("/usr/local/bin")))
+
+(setenv "PATH" (concat (getenv "PATH") ":/home/jdw/.nvm/versions/node/v4.3.2/bin"))
+(setq exec-path (append exec-path '("/home/jdw/.nvm/versions/node/v4.3.2/bin")))
+
 
 ;; ispell setup
 (if (eq system-type 'darwin)
@@ -415,15 +421,38 @@ by using nxml's indentation rules."
 
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
-(custom-set-variables  
- '(js2-basic-offset 2)  
- '(js2-bounce-indent-p t)  
-)
+(custom-set-variables
+
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(js2-basic-offset 2)
+ '(js2-bounce-indent-p t)
+ '(wakatime-python-bin "/usr/bin/python"))
 
 ;; wakatime
 (setq wakatime-api-key "2579cd0a-ac6b-4065-85f4-c1c2116d360a")
 (setq wakatime-cli-path "/usr/local/bin/wakatime")
-(setq wakatime-python-bin "/usr/local/bin/python")
+
+;; tide
+(defun setup-tide-mode ()
+  (interactive)
+  (tide-setup)
+  (flycheck-mode +1)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (eldoc-mode +1)
+  (tide-hl-identifier-mode +1)
+  (company-mode +1))
+
+;; aligns annotation to the right hand side
+(setq company-tooltip-align-annotations t)
+
+;; formats the buffer before saving
+(add-hook 'before-save-hook 'tide-format-before-save)
+
+(add-hook 'typescript-mode-hook #'setup-tide-mode)
+
 
 ;;;;;;;;;;;;;;;;;;
 ;; KEY BINDINGS ;;
@@ -469,6 +498,9 @@ by using nxml's indentation rules."
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+(setq alt-keysym 'meta)
+
+
 ;;;;;;;;;;;
 ;; HOOKS ;;
 ;;;;;;;;;;;
@@ -509,12 +541,18 @@ welcome to...
           ░                                                       ░                 ")
 
 
-;; (get-buffer-create "*splash*")
-;; (switch-to-buffer "*splash*")
-;; (insert-current-date-time)
-;; (insert splash-art)
-;; (beginning-of-buffer)
-;; (read-only-mode)
+(get-buffer-create "*splash*")
+(switch-to-buffer "*splash*")
+(insert-current-date-time)
+(insert splash-art)
+(beginning-of-buffer)
+(read-only-mode)
 
 (provide '.emacs)
 ;;; .emacs ends here
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
