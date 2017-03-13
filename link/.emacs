@@ -1,5 +1,3 @@
-
-
 ;;; EMACS --- jdw's emacs config file
 ;;;
 ;;; This is my emacs config. Hack away at it to your liking! I've copied
@@ -19,6 +17,7 @@
 
 ;; Package Management
 (require 'package)
+
 (package-initialize "no-activate")
 
 ;; Additonal repositories
@@ -62,7 +61,6 @@
     flymake-easy
     flymake-jshint
     flymake-jslint
-    flymake-php
     flymake-ruby
     go-mode
     js2-mode
@@ -77,8 +75,6 @@
     markdown-toc
     multiple-cursors
     paredit
-    php-auto-yasnippets
-    php-mode
     pkg-info
     popup
     projectile
@@ -96,20 +92,36 @@
     yasnippet)
   "A list of packages to ensure are installed at launch.")
 
-(defun default-packages-installed-p ()
-  (loop for p in default-packages
-        when (not (package-installed-p p)) do (return nil)
-        finally (return t)))
+; activate all the packages (in particular autoloads)
+(package-initialize)
 
-(unless (default-packages-installed-p)
-  ;; check for new packages (package versions)
-  (message "%s" "Emacs is now refreshing its package database...")
-  (package-refresh-contents)
-  (message "%s" " done.")
-  ;; install the missing packages
-  (dolist (p default-packages)
-    (when (not (package-installed-p p))
-      (package-install p))))
+; fetch the list of packages available 
+(unless package-archive-contents
+  (package-refresh-contents))
+
+; install the missing packages
+(dolist (package default-packages)
+  (unless (package-installed-p package)
+    (package-install package)))
+
+(package-install 'intero)
+
+(add-hook 'haskell-mode-hook 'intero-mode)
+
+;; (defun default-packages-installed-p ()
+;;   (cl-loop for p in (default-packages)
+;;         when (not (package-installed-p p)) do (return nil)
+;;         finally (return t)))
+
+;; (unless (default-packages-installed-p)
+;;   ;; check for new packages (package versions)
+;;   (message "%s" "Emacs is now refreshing its package database...")
+;;   (package-refresh-contents)
+;;   (message "%s" " done.")
+;;   ;; install the missing packages
+;;   (dolist (p default-packages)
+;;     (when (not (package-installed-p p))
+;;       (package-install p))))
 
 
 ;;;;;;;;;;;;;;;;;;;
@@ -120,19 +132,13 @@
 (require 'smartparens-config)
 (require 'multiple-cursors)
 (require 'auto-complete-config)
-(require 'php-auto-yasnippets)
 (require 'highlight-chars)
-(require 'flymake-phpcs)
 
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/dict")
 (ac-config-default)
 (ac-complete-yasnippet)
 (put 'downcase-region 'disabled nil)
 (autoload 'inf-ruby-minor-mode "inf-ruby" "Run an inferior Ruby process" t)
-;; Show the name of sniffs in PHP code warnings (eg show
-;; "Generic.CodeAnalysis.VariableAnalysis.UnusedVariable" in an unused
-;; variable warning)
-(setq flymake-phpcs-show-rule t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; USER CONFIGURABLES ;;
@@ -322,12 +328,6 @@ Uses `current-date-time-format' for the formatting the date/time."
   (remove-hook 'after-save-hook 'build-in-buffer)
   )
 
-;; php coding standards fixer
-(defun php-cs-fix ()
-  (interactive)
-  (progn (shell-command (concat "phpcbf " (buffer-file-name)))
-         (revert-buffer nil t)))
-
 ;; zip/unzip files in dired mode
 (eval-after-load "dired-aux"
    '(add-to-list 'dired-compress-file-suffixes
@@ -415,10 +415,16 @@ by using nxml's indentation rules."
 
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
-(custom-set-variables  
- '(js2-basic-offset 2)  
- '(js2-bounce-indent-p t)  
-)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(js2-basic-offset 2)
+ '(js2-bounce-indent-p t)
+ '(package-selected-packages
+   (quote
+    (tide yari yaml-mode web-mode wakatime-mode use-package tidy smartparens slime scss-mode rw-hunspell ruby-electric ruby-block php-extras php-auto-yasnippets php+-mode multiple-cursors markdown-toc less-css-mode key-chord jsx-mode jade-mode inf-ruby highlight-chars go-mode flymake-ruby flymake-phpcs flymake-php flymake-json flymake-jslint flymake-jshint flycheck fish-mode feature-mode exec-path-from-shell emr column-enforce-mode coffee-mode auctex ac-js2 ac-c-headers))))
 
 ;; wakatime
 (setq wakatime-api-key "2579cd0a-ac6b-4065-85f4-c1c2116d360a")
@@ -484,9 +490,9 @@ by using nxml's indentation rules."
 
 ;; (add-hook 'after-init-hook 'eslint-flycheck)
 
-(add-hook 'font-lock-mode-hook 'column-enforce-mode)
-(add-hook 'font-lock-mode-hook 'hc-highlight-tabs)
-(add-hook 'font-lock-mode-hook 'hc-highlight-trailing-whitespace)
+;; (add-hook 'font-lock-mode-hook 'column-enforce-mode)
+;; (add-hook 'font-lock-mode-hook 'hc-highlight-tabs)
+;; (add-hook 'font-lock-mode-hook 'hc-highlight-trailing-whitespace)
 
 ;;;;;;;;;;;;;;;;;;;
 ;; SPLASH SCREEN ;;
@@ -518,3 +524,9 @@ welcome to...
 
 (provide '.emacs)
 ;;; .emacs ends here
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
