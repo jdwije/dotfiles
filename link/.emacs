@@ -30,8 +30,7 @@
 (add-to-list 'load-path
               "~/.emacs.d/src/yasnippet")
 
-(add-to-list 'load-path
-             ".emacs.d/eslint-flycheck")
+;;(add-to-list 'load-path           ".emacs.d/eslint-flycheck")
 
 (setq package-archive-enable-alist '(("melpa" deft magit)))
 
@@ -44,30 +43,31 @@
 (add-to-list 'load-path "~/.emacs.d/cl-lib/")
 (require 'cl-lib)
 
-(add-to-list 'load-path "~/.emacs.d/eslint-flycheck/")
-(require 'eslint-flycheck)
+;; (add-to-list 'load-path "~/.emacs.d/eslint-flycheck/")
+;; (require 'eslint-flycheck)
 
 (defvar default-packages
-  '(auctex
+  '(ac-js2
+    auctex
     auto-complete
     coffee-mode
     column-enforce-mode
+    company
     dash
     emr
     exec-path-from-shell
+    expand-region
     feature-mode
     fish-mode
     flycheck
     flymake-easy
-    flymake-jshint
     flymake-jslint
     flymake-ruby
     go-mode
-    js2-mode
-    ac-js2
     highlight-chars
     inf-ruby
     jade-mode
+    js2-mode
     key-chord
     less-css-mode
     list-utils
@@ -80,12 +80,17 @@
     projectile
     ruby-block
     ruby-electric
+    racer
+    rust-mode
     rw-hunspell
     s
     scss-mode
     slime
     smartparens
+    smex
+    tide
     use-package
+    wakatime-mode
     web-mode
     yaml-mode
     yari
@@ -133,6 +138,8 @@
 (require 'multiple-cursors)
 (require 'auto-complete-config)
 (require 'highlight-chars)
+(require 'flycheck)
+;; (require 'flymake-phpcs)
 
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/dict")
 (ac-config-default)
@@ -175,6 +182,17 @@
 (setq ac-use-menu-map t)
 (setq-default fill-column 80) ;; 80 character rule
 
+;; smex setup
+  (smex-initialize) ; Can be omitted. This might cause a (minimal) delay
+                    ; when Smex is auto-initialized on its first run.
+(global-set-key (kbd "M-x") 'smex)
+  (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+  ;; This is your old M-x.
+  (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+
+;; expand region
+(global-set-key (kbd "C-=") 'er/expand-region)
+
 ;; slime setup
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
 (setq inferior-lisp-program "/usr/local/bin/sbcl")
@@ -193,6 +211,10 @@
 ;; add /usr/local/bin to execution paths
 ;; (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
 ;; (setq exec-path (append exec-path '("/usr/local/bin")))
+
+(setenv "PATH" (concat (getenv "PATH") ":/home/jdw/.nvm/versions/node/v4.3.2/bin"))
+(setq exec-path (append exec-path '("/home/jdw/.nvm/versions/node/v4.3.2/bin")))
+
 
 ;; ispell setup
 (if (eq system-type 'darwin)
@@ -415,6 +437,11 @@ by using nxml's indentation rules."
 
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
+;; rust
+(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
+(add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
+(setq rust-format-on-save t)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -424,12 +451,31 @@ by using nxml's indentation rules."
  '(js2-bounce-indent-p t)
  '(package-selected-packages
    (quote
-    (tide yari yaml-mode web-mode wakatime-mode use-package tidy smartparens slime scss-mode rw-hunspell ruby-electric ruby-block php-extras php-auto-yasnippets php+-mode multiple-cursors markdown-toc less-css-mode key-chord jsx-mode jade-mode inf-ruby highlight-chars go-mode flymake-ruby flymake-phpcs flymake-php flymake-json flymake-jslint flymake-jshint flycheck fish-mode feature-mode exec-path-from-shell emr column-enforce-mode coffee-mode auctex ac-js2 ac-c-headers))))
+    (flycheck-rust racer rust-mode yari yaml-mode web-mode wakatime-mode use-package tidy tide smartparens slime scss-mode rw-hunspell ruby-electric ruby-block php-extras php-auto-yasnippets php+-mode multiple-cursors markdown-toc less-css-mode key-chord jsx-mode jade-mode intero inf-ruby highlight-chars go-mode flymake-ruby flymake-phpcs flymake-php flymake-json flymake-jslint flymake-jshint fish-mode feature-mode exec-path-from-shell emr column-enforce-mode coffee-mode auctex ac-js2 ac-c-headers)))
+ '(wakatime-python-bin "/usr/local/bin/python"))
 
 ;; wakatime
 (setq wakatime-api-key "2579cd0a-ac6b-4065-85f4-c1c2116d360a")
 (setq wakatime-cli-path "/usr/local/bin/wakatime")
-(setq wakatime-python-bin "/usr/local/bin/python")
+
+;; tide
+(defun setup-tide-mode ()
+  (interactive)
+  (tide-setup)
+  (flycheck-mode +1)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (eldoc-mode +1)
+  (tide-hl-identifier-mode +1)
+  (company-mode +1))
+
+;; aligns annotation to the right hand side
+(setq company-tooltip-align-annotations t)
+
+;; formats the buffer before saving
+(add-hook 'before-save-hook 'tide-format-before-save)
+
+(add-hook 'typescript-mode-hook #'setup-tide-mode)
+
 
 ;;;;;;;;;;;;;;;;;;
 ;; KEY BINDINGS ;;
@@ -475,6 +521,9 @@ by using nxml's indentation rules."
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+(setq alt-keysym 'meta)
+
+
 ;;;;;;;;;;;
 ;; HOOKS ;;
 ;;;;;;;;;;;
@@ -515,12 +564,12 @@ welcome to...
           ░                                                       ░                 ")
 
 
-;; (get-buffer-create "*splash*")
-;; (switch-to-buffer "*splash*")
-;; (insert-current-date-time)
-;; (insert splash-art)
-;; (beginning-of-buffer)
-;; (read-only-mode)
+(get-buffer-create "*splash*")
+(switch-to-buffer "*splash*")
+(insert-current-date-time)
+(insert splash-art)
+(beginning-of-buffer)
+(read-only-mode)
 
 (provide '.emacs)
 ;;; .emacs ends here
