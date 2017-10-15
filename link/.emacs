@@ -1,13 +1,14 @@
-;;; EMACS --- jdw's emacs config file
-;;;
-;;; This is my emacs config. Hack away at it to your liking! I've copied
-;;; bits and pieces of it from other, more wiser folks and added my own
-;;; customizations to it. Here's a list of my sources.
-;;;
-;;; INSPIRATION:
-;;; - Steve Yeggie: http://steve.yegge.googlepages.com/my-dot-emacs-file
-;;; - Aaron Bedra: http://aaronbedra.com/emacs.d/
-;;;
+;;; Emacs --- jdw's emacs config file
+;;;  
+;;; Commentary: 
+;;;  
+;;;  This is my Emacs config. Hack away at it to your liking! I've copied bits
+;;;  and pieces of it from other, more wiser folks and added my own
+;;;  customization's to it. Here's a list of my sources.
+;;;  
+;;;  - Steve Yeggie: http://steve.yegge.googlepages.com/my-dot-emacs-file
+;;;  - Aaron Bedra: http://aaronbedra.com/emacs.d/
+;;;  
 
 ;;; Code:
 
@@ -27,10 +28,8 @@
              '("elpa" . "http://tromey.com/elpa/"))
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/"))
-(add-to-list 'load-path
-              "~/.emacs.d/src/yasnippet")
-
-;;(add-to-list 'load-path           ".emacs.d/eslint-flycheck")
+;; (add-to-list 'load-path
+   ;;           "~/.emacs.d/src/yasnippet")
 
 (setq package-archive-enable-alist '(("melpa" deft magit)))
 
@@ -64,8 +63,17 @@
     flymake-jslint
     flymake-ruby
     go-mode
+    helm
+    helm-flx
+    helm-flycheck
+    helm-fuzzier
+    helm-fuzzy-find
+    helm-gitignore
+    helm-grepint
+    helm-ispell
     highlight-chars
     inf-ruby
+    intero
     jade-mode
     js2-mode
     key-chord
@@ -78,23 +86,24 @@
     pkg-info
     popup
     projectile
+    racer
     ruby-block
     ruby-electric
-    racer
     rust-mode
     rw-hunspell
     s
     scss-mode
     slime
     smartparens
-    smex
+    sublimity
     tide
     use-package
     wakatime-mode
     web-mode
     yaml-mode
     yari
-    yasnippet)
+    yasnippet
+    yasnippet-snippets)
   "A list of packages to ensure are installed at launch.")
 
 ; activate all the packages (in particular autoloads)
@@ -109,26 +118,6 @@
   (unless (package-installed-p package)
     (package-install package)))
 
-(package-install 'intero)
-
-(add-hook 'haskell-mode-hook 'intero-mode)
-
-;; (defun default-packages-installed-p ()
-;;   (cl-loop for p in (default-packages)
-;;         when (not (package-installed-p p)) do (return nil)
-;;         finally (return t)))
-
-;; (unless (default-packages-installed-p)
-;;   ;; check for new packages (package versions)
-;;   (message "%s" "Emacs is now refreshing its package database...")
-;;   (package-refresh-contents)
-;;   (message "%s" " done.")
-;;   ;; install the missing packages
-;;   (dolist (p default-packages)
-;;     (when (not (package-installed-p p))
-;;       (package-install p))))
-
-
 ;;;;;;;;;;;;;;;;;;;
 ;; PACKAGE SETUP ;;
 ;;;;;;;;;;;;;;;;;;;
@@ -139,11 +128,30 @@
 (require 'auto-complete-config)
 (require 'highlight-chars)
 (require 'flycheck)
-;; (require 'flymake-phpcs)
+(require 'sublimity)
+(require 'sublimity-scroll)
+(require 'sublimity-map) ;; experimental
+(require 'sublimity-attractive)
+(require 'helm-config)
+
+;; (sublimity-mode 1)
+
+(setq sublimity-map-size 20)
+(setq sublimity-map-fraction 0.3)
+(setq sublimity-map-text-scale -7)
+(sublimity-map-set-delay 2)
+(add-hook 'sublimity-map-setup-hook
+          (lambda ()
+            (setq buffer-face-mode-face '(:family "Monospace"))
+            (buffer-face-mode)))
+(sublimity-attractive-hide-bars)
+
+(winner-mode)
+(projectile-mode)
 
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/dict")
 (ac-config-default)
-(ac-complete-yasnippet)
+;; (ac-complete-yasnippet)
 (put 'downcase-region 'disabled nil)
 (autoload 'inf-ruby-minor-mode "inf-ruby" "Run an inferior Ruby process" t)
 
@@ -157,7 +165,8 @@
 (setq gnus-thread-sort-functions
       '(gnus-thread-sort-by-number
         gnus-thread-sort-by-date))
-(setq yas-global-mode 1)
+;; (yas-global-mode)
+
 (setq ac-sources '(ac-source-semantic ac-source-yasnippet))
 ;; set autosaves to temp dir
 (setq backup-directory-alist
@@ -183,12 +192,12 @@
 (setq-default fill-column 80) ;; 80 character rule
 
 ;; smex setup
-  (smex-initialize) ; Can be omitted. This might cause a (minimal) delay
-                    ; when Smex is auto-initialized on its first run.
-(global-set-key (kbd "M-x") 'smex)
-  (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-  ;; This is your old M-x.
-  (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+;;   (smex-initialize) ; Can be omitted. This might cause a (minimal) delay
+;;                     ; when Smex is auto-initialized on its first run.
+;; (global-set-key (kbd "M-x") 'smex)
+;;   (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;;   ;; This is your old M-x.
+;;   (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
 ;; expand region
 (global-set-key (kbd "C-=") 'er/expand-region)
@@ -447,12 +456,19 @@ by using nxml's indentation rules."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#e090d7" "#8cc4ff" "#eeeeec"])
+ '(custom-enabled-themes (quote (red-alert)))
+ '(custom-safe-themes
+   (quote
+    ("f34495514c7767496e94c3d4435b8d87b8923d1c52ab4e1978055cdb5c1bdec0" "17dd13452c80023a5a050faac15184369e493492fdbd6b151142ad24decd9240" "a5ebdbb839e09d37ed009840a0aa1ce60aaf6046940925414e825c6e84ccac11" "548dbeb21ab9abfba46f2911e7377c6d8eb3bf603e614f7f1c85e8d72893126a" "d7257a8bf161b46618199a67a2f41210464125230e63fc2d1792e5c71cd63003" "deaa09dad16f7f2dac6c82d69da9ab26e05c9f46942ab7fee02d51f3db29add8" "61df1a6f6cffdcce5bf5e81ab89015688602170079c42f6a8025b6c16f9661e8" "a4c9e536d86666d4494ef7f43c84807162d9bd29b0dfd39bdf2c3d845dcc7b2e" default)))
+ '(fci-rule-color "#3E4451")
  '(js2-basic-offset 2)
  '(js2-bounce-indent-p t)
  '(package-selected-packages
    (quote
-    (flycheck-rust racer rust-mode yari yaml-mode web-mode wakatime-mode use-package tidy tide smartparens slime scss-mode rw-hunspell ruby-electric ruby-block php-extras php-auto-yasnippets php+-mode multiple-cursors markdown-toc less-css-mode key-chord jsx-mode jade-mode intero inf-ruby highlight-chars go-mode flymake-ruby flymake-phpcs flymake-php flymake-json flymake-jslint flymake-jshint fish-mode feature-mode exec-path-from-shell emr column-enforce-mode coffee-mode auctex ac-js2 ac-c-headers)))
- '(wakatime-python-bin "/usr/local/bin/python"))
+    (atom-one-dark-theme flycheck-rust racer yari yaml-mode web-mode wakatime-mode use-package tidy tide smartparens slime scss-mode rw-hunspell ruby-electric ruby-block php-extras php-auto-yasnippets php+-mode multiple-cursors markdown-toc less-css-mode key-chord jsx-mode jade-mode intero inf-ruby highlight-chars go-mode flymake-ruby flymake-phpcs flymake-php flymake-json flymake-jslint flymake-jshint fish-mode feature-mode exec-path-from-shell emr column-enforce-mode coffee-mode auctex ac-js2 ac-c-headers)))
+ '(wakatime-python-bin nil))
 
 ;; wakatime
 (setq wakatime-api-key "2579cd0a-ac6b-4065-85f4-c1c2116d360a")
@@ -488,7 +504,7 @@ by using nxml's indentation rules."
 (global-set-key (kbd "M-DEL") 'backward-delete-char)
 
 ;; multiple cursors
-(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+(global-set-key (kbd "C-?") 'mc/edit-lines)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
@@ -510,10 +526,80 @@ by using nxml's indentation rules."
 (global-set-key (kbd "C-c ff") 'find-name-dired)
 (global-set-key (kbd "C-c z") 'zap-to-char)
 
-;; auto-complete
-(define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
-(define-key ac-completing-map (kbd "TAB") 'ac-complete)
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   (define-key ac-completing-map (kbd "RET") nil)
+(global-set-key (kbd "M-s") 'yas/insert-snippet)
+
+;;;;;;;;;;;;;;;;;;;
+;; AUTO-COMPLETE ;;
+;;;;;;;;;;;;;;;;;;;
+
+(define-key ac-mode-map (kbd "TAB") 'auto-complete)
+(define-key ac-completing-map (kbd "M-TAB") 'ac-complete)
+(define-key ac-completing-map (kbd "RET") nil)
+
+;;;;;;;;;;;;;;
+;; WINDMOVE ;;
+;;;;;;;;;;;;;;
+
+(windmove-default-keybindings)
+
+;;;;;;;;;;
+;; HELM ;;
+;;;;;;;;;;
+
+(setq helm-recentf-fuzzy-match 1)
+(setq helm-buffers-fuzzy-matching 1)
+(setq helm-recentf-fuzzy-match 1)
+(setq helm-buffers-fuzzy-matching 1)
+(setq helm-locate-fuzzy-match 1)
+(setq helm-M-x-fuzzy-match 1)
+(setq helm-semantic-fuzzy-match 1)
+(setq helm-imenu-fuzzy-match 1)
+(setq helm-apropos-fuzzy-match 1)
+(setq helm-lisp-fuzzy-completion 1)
+(setq helm-mode-fuzzy-match 1)
+(setq helm-completion-in-region-fuzzy-match 1)
+(setq helm-candidate-number-limit 25)
+
+(require 'helm-fuzzier)
+
+(setq helm-flx-for-helm-find-files t ;; t by default
+      helm-flx-for-helm-locate t) ;; nil by default
+
+(helm-flx-mode +1)
+
+(global-set-key (kbd "M-x") #'helm-M-x)
+(global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
+(global-set-key (kbd "C-x C-f") #'helm-find-files)
+(global-set-key (kbd "C-x <up>") #'helm-ispell)
+
+(helm-mode 1)
+(helm-fuzzier-mode 1)
+
+
+(require 'helm-grepint)
+    (helm-grepint-set-default-config-latest)
+    (global-set-key (kbd "C-c g") #'helm-grepint-grep)
+(global-set-key (kbd "C-c G") #'helm-grepint-grep-root)
+
+(global-set-key (kbd "C-c G") #'helm-grepint-grep-root)
+(global-set-key (kbd "C-c G") #'helm-grepint-grep-root)
+
+
+;;;;;;;;;;;;;;;
+;; KEYCHORDS ;;
+;;;;;;;;;;;;;;;
+
+(key-chord-define-global "q/" 'enlarge-window)
+(key-chord-define-global ".w" 'shrink-window)
+(key-chord-define-global "z]" 'enlarge-window-horizontally)
+(key-chord-define-global "x[" 'shrink-window-horizontally)
+(key-chord-define-global "q]" 'balance-windows)
+(key-chord-define-global "as" 'helm-occur)
+
+
+(key-chord-mode +1) ;; always on
+
+
 
 ;;;;;;;;;;;;;
 ;; ALIASES ;;
@@ -536,20 +622,13 @@ by using nxml's indentation rules."
 (add-hook 'ruby-mode-hook 'ri-bind-key)
 (add-hook 'after-init-hook 'global-flycheck-mode)
 (add-hook 'after-init-hook 'global-wakatime-mode)
-
-;; (add-hook 'after-init-hook 'eslint-flycheck)
-
-;; (add-hook 'font-lock-mode-hook 'column-enforce-mode)
-;; (add-hook 'font-lock-mode-hook 'hc-highlight-tabs)
-;; (add-hook 'font-lock-mode-hook 'hc-highlight-trailing-whitespace)
+(add-hook 'haskell-mode-hook 'intero-mode)
 
 ;;;;;;;;;;;;;;;;;;;
 ;; SPLASH SCREEN ;;
 ;;;;;;;;;;;;;;;;;;;
 
 (setq splash-art "
-
-welcome to...
 
 
  ▄▄▄██▀▀▀▓█████▄  █     █░ ░ ██████    ▓█████  ███▄ ▄███▓ ▄▄▄       ▄████▄    ██████ 
