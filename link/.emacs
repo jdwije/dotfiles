@@ -47,6 +47,7 @@
 
 (defvar default-packages
   '(ac-js2
+    ac-helm
     auctex
     auto-complete
     coffee-mode
@@ -531,8 +532,9 @@ by using nxml's indentation rules."
 ;;;;;;;;;;;;;;;;;;;
 ;; AUTO-COMPLETE ;;
 ;;;;;;;;;;;;;;;;;;;
+(require 'ac-helm)  ;; Not necessary if using ELPA package
 
-(define-key ac-mode-map (kbd "TAB") 'auto-complete)
+(define-key ac-mode-map (kbd "TAB") 'ac-complete-with-helm)
 (define-key ac-completing-map (kbd "M-TAB") 'ac-complete)
 (define-key ac-completing-map (kbd "RET") nil)
 

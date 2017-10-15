@@ -25,7 +25,7 @@
  '(font-lock-comment-delimiter-face ((default (:inherit (font-lock-comment-face)))))
  '(font-lock-doc-face ((t (:inherit (font-lock-string-face)))))
  '(font-lock-function-name-face ((t (:foreground "#61AFEF"))))
- '(font-lock-keyword-face ((t (:foreground "#C678DD"))))
+ '(font-lock-keyword-face ((t (:foreground "#63b8ff"))))
  '(font-lock-preprocessor-face ((t (:foreground "#828997"))))
  '(font-lock-string-face ((t (:foreground "#98C379"))))
  '(font-lock-type-face ((t (:foreground "#E5C07B"))))
