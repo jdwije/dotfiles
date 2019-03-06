@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+# cleanup docker's garbage
+./dotpurge
+
+# Essential images
+docker pull docker.elastic.co/elasticsearch/elasticsearch:6.3.1
+
+# homebrew house keeping
+echo "giving brew some tlc"
+brew update
+brew upgrade
+brew cleanup -s
+brew cask cleanup
+brew doctor
+brew missing
+
+# node refresh
+echo "npm luvin'"
+npm cache clean --force
+npm install -g npm@latest
+npm update -g
+npm list -g 
+
+
+# python refresh
+pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U
+
+# osx refresh
+mas upgrade
+

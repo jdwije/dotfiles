@@ -49,7 +49,7 @@
            inf-ruby intero jade-mode js2-mode key-chord less-css-mode list-utils markdown-mode
            markdown-toc multiple-cursors paredit pkg-info popup projectile racer ruby-block
            ruby-electric rust-mode rw-hunspell s scss-mode slime smartparens sublimity tide company-quickhelp indium
-           use-package wakatime-mode web-mode yaml-mode yari yasnippet yasnippet-snippets) 
+           use-package web-mode yaml-mode yari yasnippet yasnippet-snippets arduino-mode omnisharp omnisharp)
   "A list of packages to ensure are installed at launch.")
 
                                         ; activate all the packages (in particular autoloads)
@@ -148,6 +148,15 @@
 (setenv "PATH" (concat (getenv "PATH") ":/home/jdw/.nvm/versions/node/v4.3.2/bin"))
 (setq exec-path (append exec-path '("/home/jdw/.nvm/versions/node/v4.3.2/bin")))
 
+;; tide setup
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+(add-hook 'web-mode-hook
+          (lambda ()
+            (when (string-equal "tsx" (file-name-extension buffer-file-name))
+              (setup-tide-mode))))
+;; enable typescript-tslint checker
+(flycheck-add-mode 'typescript-tslint 'web-mode)
 
 ;; ispell setup
 (if (eq system-type 'darwin) 
@@ -377,14 +386,10 @@ by using nxml's indentation rules."
  '(js2-bounce-indent-p t)
  '(package-selected-packages
    (quote
-    (discover-my-major which-key discover indium helm-company helm-swoop ht fsm npm svg helm-npm cl-lib atom-one-dark-theme flycheck-rust racer yari yaml-mode web-mode wakatime-mode use-package tidy tide smartparens slime scss-mode rw-hunspell ruby-electric ruby-block php-extras php-auto-yasnippets php+-mode multiple-cursors markdown-toc less-css-mode key-chord jsx-mode jade-mode intero inf-ruby highlight-chars go-mode flymake-ruby flymake-phpcs flymake-php flymake-json flymake-jslint flymake-jshint fish-mode feature-mode exec-path-from-shell emr column-enforce-mode coffee-mode auctex ac-js2 ac-c-headers)))
- '(wakatime-python-bin nil))
+    (adoc-mode emojify elm-mode docker-compose-mode dockerfile-mode omnisharp arduino-mode vue-html-mode async-await dash-functional discover-my-major which-key discover indium helm-company helm-swoop ht fsm npm svg helm-npm cl-lib atom-one-dark-theme flycheck-rust yari yaml-mode web-mode use-package tidy tide smartparens slime rw-hunspell ruby-electric ruby-block php-extras php-auto-yasnippets php+-mode multiple-cursors markdown-toc less-css-mode key-chord jsx-mode jade-mode intero inf-ruby highlight-chars go-mode flymake-ruby flymake-phpcs flymake-php flymake-json flymake-jslint flymake-jshint fish-mode feature-mode exec-path-from-shell emr column-enforce-mode coffee-mode auctex ac-js2 ac-c-headers))))
 
-;; wakatime
-(setq wakatime-api-key "2579cd0a-ac6b-4065-85f4-c1c2116d360a")
-(setq wakatime-cli-path "/usr/local/bin/wakatime")
 
-;; tide
+;; Tide
 (defun setup-tide-mode () 
   (interactive) 
   (tide-setup) 
@@ -396,6 +401,8 @@ by using nxml's indentation rules."
 
 ;; aligns annotation to the right hand side
 (setq company-tooltip-align-annotations t)
+
+(setq tide-format-options '(:indentSize 2))
 
 ;; formats the buffer before saving
 (add-hook 'before-save-hook 'tide-format-before-save)
@@ -419,7 +426,7 @@ by using nxml's indentation rules."
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
-                                        ; set f5 + f6 to horizontal window size. set f7 + f8 to vertical window size.
+;; set f5 + f6 to horizontal window size. set f7 + f8 to vertical window size.
 (global-set-key (kbd "<f5>") 'shrink-window-horizontally)
 (global-set-key (kbd "<f6>") 'enlarge-window-horizontally)
 (global-set-key (kbd "<f7>") 'shrink-window)
@@ -567,7 +574,6 @@ by using nxml's indentation rules."
 (add-hook 'ruby-mode-hook 'inf-ruby-minor-mode)
 (add-hook 'ruby-mode-hook 'ri-bind-key)
 (add-hook 'after-init-hook 'global-flycheck-mode)
-(add-hook 'after-init-hook 'global-wakatime-mode)
 (add-hook 'haskell-mode-hook 'intero-mode)
 
 ;;;;;;;;;;;;;;;;;;;
