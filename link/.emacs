@@ -22,7 +22,6 @@
 (package-initialize "no-activate")
 
 ;; Additonal repositories
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("elpa" . "http://tromey.com/elpa/"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
 ;; (add-to-list 'load-path
@@ -43,13 +42,13 @@
 ;; (require 'eslint-flycheck)
 
 (defvar default-packages 
-  '(auctex buttercup coffee-mode column-enforce-mode company dash elisp-format emr
-           exec-path-from-shell expand-region fish-mode flycheck go-mode helm helm-company helm-flx helm-flycheck helm-fuzzier
-           helm-fuzzy-find helm-gitignore helm-grepint helm-ispell helm-swoop highlight-chars
-           inf-ruby intero jade-mode js2-mode key-chord less-css-mode list-utils markdown-mode
-           markdown-toc multiple-cursors paredit pkg-info popup projectile racer ruby-block
-           ruby-electric rust-mode rw-hunspell s scss-mode slime smartparens sublimity tide company-quickhelp indium
-           use-package web-mode yaml-mode yari yasnippet yasnippet-snippets arduino-mode omnisharp omnisharp)
+  '(
+    buttercup column-enforce-mode company dash discover elisp-format emr
+           exec-path-from-shell expand-region flycheck go-mode helm helm-company helm-flx helm-flycheck helm-fuzzier
+           helm-fuzzy-find helm-gitignore helm-grepint helm-ispell helm-swoop
+           js2-mode key-chord less-css-mode list-utils markdown-mode
+           markdown-toc multiple-cursors paredit pkg-info popup projectile rust-mode s scss-mode spinner slime smartparens sublimity tide company-quickhelp indium
+           use-package web-mode yaml-mode yari yasnippet yasnippet-snippets arduino-mode which-key omnisharp omnisharp)
   "A list of packages to ensure are installed at launch.")
 
                                         ; activate all the packages (in particular autoloads)
@@ -69,7 +68,6 @@
 (require 'yasnippet)
 (require 'smartparens-config)
 (require 'multiple-cursors)
-(require 'highlight-chars)
 (require 'flycheck)
 (require 'sublimity)
 (require 'sublimity-scroll)
@@ -90,7 +88,6 @@
 (projectile-mode)
 
 (put 'downcase-region 'disabled nil)
-(autoload 'inf-ruby-minor-mode "inf-ruby" "Run an inferior Ruby process" t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; USER CONFIGURABLES ;;
@@ -108,7 +105,6 @@
 (setq org-agenda-include-diary t)
 (setq diary-file "~/Organiser/Diary")
 (setq org-agenda-files '("~/Organiser/agendas") )
-(setq ruby-insert-encoding-magic-comment nil)
 (setq flyspell-issue-welcome-flag nil)
 (setq inhibit-splash-screen t initial-scratch-message nil initial-major-mode 'org-mode)
 (setq tab-width 8 indent-tabs-mode nil)
@@ -222,11 +218,6 @@
                      (delete-file filename)  
                      (set-visited-file-name newname)         
                      (set-buffer-modified-p nil)     t))))
-
-;; function to bind ri ruby inline documentation to a key
-(defun ri-bind-key () 
-  (local-set-key [f1] 'yari))
-
 
 (defvar current-date-time-format "%a %b %d %H:%M:%S %Z %Y" 
   "Format of date to insert with `insert-current-date-time' func
@@ -355,20 +346,13 @@ by using nxml's indentation rules."
 ;; disable jshint since we prefer eslint checking
 (setq-default flycheck-disabled-checkers (append flycheck-disabled-checkers '(javascript-jshint)))
 
-;; use eslint with web-mode for jsx files
-(flycheck-add-mode 'javascript-eslint 'web-mode)
+;; use standard with web-mode for jsx files
+(flycheck-add-mode 'javascript-standard 'js2-mode)
 
 ;; customize flycheck temp file prefix
 (setq-default flycheck-temp-prefix ".flycheck")
 
 ;; javascript
-
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-
-;; rust
-(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
-(add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
-(setq rust-format-on-save t)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -382,11 +366,12 @@ by using nxml's indentation rules."
    (quote
     ("6cacb6fd5521eeee491a873322fe18b67703f2ceb67300c0c0f6385914b995c3" "f34495514c7767496e94c3d4435b8d87b8923d1c52ab4e1978055cdb5c1bdec0" "17dd13452c80023a5a050faac15184369e493492fdbd6b151142ad24decd9240" "a5ebdbb839e09d37ed009840a0aa1ce60aaf6046940925414e825c6e84ccac11" "548dbeb21ab9abfba46f2911e7377c6d8eb3bf603e614f7f1c85e8d72893126a" "d7257a8bf161b46618199a67a2f41210464125230e63fc2d1792e5c71cd63003" "deaa09dad16f7f2dac6c82d69da9ab26e05c9f46942ab7fee02d51f3db29add8" "61df1a6f6cffdcce5bf5e81ab89015688602170079c42f6a8025b6c16f9661e8" "a4c9e536d86666d4494ef7f43c84807162d9bd29b0dfd39bdf2c3d845dcc7b2e" default)))
  '(fci-rule-color "#3E4451")
+ '(js-indent-level 2)
  '(js2-basic-offset 2)
  '(js2-bounce-indent-p t)
  '(package-selected-packages
    (quote
-    (adoc-mode emojify elm-mode docker-compose-mode dockerfile-mode omnisharp arduino-mode vue-html-mode async-await dash-functional discover-my-major which-key discover indium helm-company helm-swoop ht fsm npm svg helm-npm cl-lib atom-one-dark-theme flycheck-rust yari yaml-mode web-mode use-package tidy tide smartparens slime rw-hunspell ruby-electric ruby-block php-extras php-auto-yasnippets php+-mode multiple-cursors markdown-toc less-css-mode key-chord jsx-mode jade-mode intero inf-ruby highlight-chars go-mode flymake-ruby flymake-phpcs flymake-php flymake-json flymake-jslint flymake-jshint fish-mode feature-mode exec-path-from-shell emr column-enforce-mode coffee-mode auctex ac-js2 ac-c-headers))))
+    (gherkin-mode ac-helm adoc-mode emojify elm-mode docker-compose-mode dockerfile-mode omnisharp arduino-mode vue-html-mode async-await dash-functional discover-my-major which-key discover indium helm-company helm-swoop ht fsm npm svg helm-npm cl-lib atom-one-dark-theme flycheck-rust yari yaml-mode web-mode use-package tidy tide smartparens slime rw-hunspell php-extras php-auto-yasnippets php+-mode multiple-cursors markdown-toc less-css-mode key-chord jsx-mode go-mode flymake-phpcs flymake-php flymake-json flymake-jslint flymake-jshint fish-mode feature-mode exec-path-from-shell emr column-enforce-mode coffee-mode auctex ac-js2 ac-c-headers))))
 
 
 ;; Tide
@@ -496,6 +481,23 @@ by using nxml's indentation rules."
   (add-hook 'helm-after-initialize-hook 'helm-ido-like-setup-bg-color-1))
 
 ;;;###autoload
+(ac-config-default)
+
+(global-auto-complete-mode t)
+
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(add-to-list 'ac-modes 'js2-mode)
+(add-to-list 'load-path "/Users/jdwije/code/jdwije/tern/emacs/")
+(autoload 'tern-mode "tern.el" nil t)
+
+(add-hook 'js2-mode 'tern-mode)
+(add-hook 'js2-mode 'yas-minor-mode)
+
+(eval-after-load 'tern
+   '(progn
+      (require 'tern-auto-complete)
+      (tern-ac-setup)))
+
 (defun helm-ido-like () 
   "Configure and activate `helm', `helm-fuzzier' and `helm-flx'." 
   (interactive) 
@@ -536,7 +538,7 @@ by using nxml's indentation rules."
 
 (global-set-key (kbd "C-c G") #'helm-grepint-grep-root)
 (global-set-key (kbd "C-c G") #'helm-grepint-grep-root)
-
+(global-set-key (kbd "M-<down>") #'completion-at-point)
 
 ;;;;;;;;;;;;;;;
 ;; KEYCHORDS ;;
@@ -571,10 +573,8 @@ by using nxml's indentation rules."
 (add-hook 'web-mode-hook  'my-web-mode-hook)
 (add-hook 'prog-mode-hook 'emr-initialize)
 (add-hook 'after-init-hook #'smartparens-global-mode)
-(add-hook 'ruby-mode-hook 'inf-ruby-minor-mode)
-(add-hook 'ruby-mode-hook 'ri-bind-key)
-(add-hook 'after-init-hook 'global-flycheck-mode)
-(add-hook 'haskell-mode-hook 'intero-mode)
+;; (add-hook 'after-init-hook 'global-flycheck-mode)
+;; (add-hook 'haskell-mode-hook 'intero-mode)
 
 ;;;;;;;;;;;;;;;;;;;
 ;; SPLASH SCREEN ;;
