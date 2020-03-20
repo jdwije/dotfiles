@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: tape async test
+# key: tape
+# --
+
+test('', async(t) => {
+
+})
