@@ -366,12 +366,12 @@ by using nxml's indentation rules."
    (quote
     ("6cacb6fd5521eeee491a873322fe18b67703f2ceb67300c0c0f6385914b995c3" "f34495514c7767496e94c3d4435b8d87b8923d1c52ab4e1978055cdb5c1bdec0" "17dd13452c80023a5a050faac15184369e493492fdbd6b151142ad24decd9240" "a5ebdbb839e09d37ed009840a0aa1ce60aaf6046940925414e825c6e84ccac11" "548dbeb21ab9abfba46f2911e7377c6d8eb3bf603e614f7f1c85e8d72893126a" "d7257a8bf161b46618199a67a2f41210464125230e63fc2d1792e5c71cd63003" "deaa09dad16f7f2dac6c82d69da9ab26e05c9f46942ab7fee02d51f3db29add8" "61df1a6f6cffdcce5bf5e81ab89015688602170079c42f6a8025b6c16f9661e8" "a4c9e536d86666d4494ef7f43c84807162d9bd29b0dfd39bdf2c3d845dcc7b2e" default)))
  '(fci-rule-color "#3E4451")
- '(js-indent-level 2 t)
+ '(js-indent-level 2)
  '(js2-basic-offset 2)
  '(js2-bounce-indent-p t)
  '(package-selected-packages
    (quote
-    (php-mode gherkin-mode ac-helm adoc-mode emojify elm-mode docker-compose-mode dockerfile-mode omnisharp arduino-mode vue-html-mode async-await dash-functional discover-my-major which-key discover indium helm-company helm-swoop ht fsm npm svg helm-npm cl-lib atom-one-dark-theme flycheck-rust yari yaml-mode web-mode use-package tidy tide smartparens slime rw-hunspell php-extras php-auto-yasnippets php+-mode multiple-cursors markdown-toc less-css-mode key-chord jsx-mode go-mode flymake-phpcs flymake-php flymake-json flymake-jslint flymake-jshint fish-mode feature-mode exec-path-from-shell emr column-enforce-mode coffee-mode auctex ac-js2 ac-c-headers))))
+    (ensime scala-mode json-mode mustache-mode mustache butler vue-mode php-mode gherkin-mode ac-helm adoc-mode emojify elm-mode docker-compose-mode dockerfile-mode omnisharp arduino-mode async-await dash-functional discover-my-major which-key discover indium helm-company helm-swoop ht fsm npm svg helm-npm cl-lib atom-one-dark-theme flycheck-rust yari yaml-mode web-mode use-package tidy tide smartparens slime rw-hunspell php-extras php-auto-yasnippets php+-mode multiple-cursors markdown-toc less-css-mode key-chord jsx-mode go-mode flymake-phpcs flymake-php flymake-json flymake-jslint flymake-jshint fish-mode feature-mode exec-path-from-shell emr column-enforce-mode coffee-mode auctex ac-js2 ac-c-headers))))
 
 
 ;; Tide
