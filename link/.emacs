@@ -23,7 +23,10 @@
 
 ;; Additonal repositories
 (add-to-list 'package-archives '("elpa" . "http://tromey.com/elpa/"))
+(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
+(add-to-list 'package-archives '("gnumelpa" . "https://melpa.org/packages/"))
+
 ;; (add-to-list 'load-path
 ;;           "~/.emacs.d/src/yasnippet")
 
@@ -41,14 +44,15 @@
 ;; (add-to-list 'load-path "~/.emacs.d/eslint-flycheck/")
 ;; (require 'eslint-flycheck)
 
+;;  indium arduino-mode 
 (defvar default-packages 
   '(
     buttercup column-enforce-mode company dash discover elisp-format emr
            exec-path-from-shell expand-region flycheck go-mode helm helm-company helm-flx helm-flycheck helm-fuzzier
            helm-fuzzy-find helm-gitignore helm-grepint helm-ispell helm-swoop
-           js2-mode key-chord less-css-mode list-utils markdown-mode
-           markdown-toc multiple-cursors paredit pkg-info popup projectile rust-mode s scss-mode spinner slime smartparens sublimity tide company-quickhelp indium
-           use-package web-mode yaml-mode yari yasnippet yasnippet-snippets arduino-mode which-key omnisharp omnisharp)
+	   js2-mode key-chord less-css-mode list-utils markdown-mode
+           markdown-toc multiple-cursors paredit pkg-info popup projectile rust-mode s scss-mode slime smartparens sublimity tide company-quickhelp
+           use-package web-mode yaml-mode yari yasnippet yasnippet-snippets which-key omnisharp omnisharp rjsx-mode prettier-js add-node-modules-path)
   "A list of packages to ensure are installed at launch.")
 
                                         ; activate all the packages (in particular autoloads)
@@ -61,6 +65,9 @@
 (dolist (package default-packages) 
   (unless (package-installed-p package) 
     (package-install package)))
+
+;; fix for gatsby js
+(setq create-lockfiles nil)
 
 ;;;;;;;;;;;;;;;;;;;
 ;; PACKAGE SETUP ;;
@@ -126,8 +133,8 @@
 (global-set-key (kbd "C-=") 'er/expand-region)
 
 ;; slime setup
-(load (expand-file-name "/Users/jdwije/quicklisp/slime-helper.el"))
-(setq inferior-lisp-program "/usr/local/bin/sbcl")
+(load (expand-file-name "~/quicklisp/slime-helper.el"))
+(setq inferior-lisp-program "/usr/bin/sbcl")
 (setq slime-contribs '(slime-fancy))
 
 ;; JS setup
@@ -336,7 +343,7 @@ by using nxml's indentation rules."
 ;; only need exec-path-from-shell on OSX
 ;; this hopefully sets up path and other vars better
 (defun setup-paths-osx () 
-  (when (memq window-system '(mac ns)) 
+  (when (memq window-system '(mac ns x)) 
     (exec-path-from-shell-initialize)))
 
 ;;; Fix junk characters in shell-mode
@@ -366,12 +373,12 @@ by using nxml's indentation rules."
    (quote
     ("6cacb6fd5521eeee491a873322fe18b67703f2ceb67300c0c0f6385914b995c3" "f34495514c7767496e94c3d4435b8d87b8923d1c52ab4e1978055cdb5c1bdec0" "17dd13452c80023a5a050faac15184369e493492fdbd6b151142ad24decd9240" "a5ebdbb839e09d37ed009840a0aa1ce60aaf6046940925414e825c6e84ccac11" "548dbeb21ab9abfba46f2911e7377c6d8eb3bf603e614f7f1c85e8d72893126a" "d7257a8bf161b46618199a67a2f41210464125230e63fc2d1792e5c71cd63003" "deaa09dad16f7f2dac6c82d69da9ab26e05c9f46942ab7fee02d51f3db29add8" "61df1a6f6cffdcce5bf5e81ab89015688602170079c42f6a8025b6c16f9661e8" "a4c9e536d86666d4494ef7f43c84807162d9bd29b0dfd39bdf2c3d845dcc7b2e" default)))
  '(fci-rule-color "#3E4451")
- '(js-indent-level 2)
+ '(js-indent-level 2 t)
  '(js2-basic-offset 2)
  '(js2-bounce-indent-p t)
  '(package-selected-packages
    (quote
-    (ensime scala-mode json-mode mustache-mode mustache butler vue-mode php-mode gherkin-mode ac-helm adoc-mode emojify elm-mode docker-compose-mode dockerfile-mode omnisharp arduino-mode async-await dash-functional discover-my-major which-key discover indium helm-company helm-swoop ht fsm npm svg helm-npm cl-lib atom-one-dark-theme flycheck-rust yari yaml-mode web-mode use-package tidy tide smartparens slime rw-hunspell php-extras php-auto-yasnippets php+-mode multiple-cursors markdown-toc less-css-mode key-chord jsx-mode go-mode flymake-phpcs flymake-php flymake-json flymake-jslint flymake-jshint fish-mode feature-mode exec-path-from-shell emr column-enforce-mode coffee-mode auctex ac-js2 ac-c-headers))))
+    (graphql-mode add-node-modules-path prettier-js rjsx-mode ensime scala-mode json-mode mustache-mode mustache butler vue-mode php-mode gherkin-mode ac-helm adoc-mode emojify elm-mode docker-compose-mode dockerfile-mode omnisharp arduino-mode async-await dash-functional discover-my-major which-key discover indium helm-company helm-swoop ht fsm npm svg helm-npm cl-lib atom-one-dark-theme flycheck-rust yari yaml-mode web-mode use-package tidy tide smartparens slime rw-hunspell php-extras php-auto-yasnippets php+-mode multiple-cursors markdown-toc less-css-mode key-chord jsx-mode go-mode flymake-phpcs flymake-php flymake-json flymake-jslint flymake-jshint fish-mode feature-mode exec-path-from-shell emr column-enforce-mode coffee-mode auctex ac-js2 ac-c-headers))))
 
 
 ;; Tide
@@ -501,7 +508,7 @@ by using nxml's indentation rules."
 
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 (add-to-list 'ac-modes 'js2-mode)
-(add-to-list 'load-path "/Users/jdwije/code/jdwije/tern/emacs/")
+(add-to-list 'load-path "~/code/systems/tern/emacs/")
 (autoload 'tern-mode "tern.el" nil t)
 
 (add-hook 'js2-mode 'tern-mode)
@@ -589,9 +596,14 @@ by using nxml's indentation rules."
 (add-hook 'after-init-hook #'smartparens-global-mode)
 ;; (add-hook 'after-init-hook 'global-flycheck-mode)
 ;; (add-hook 'haskell-mode-hook 'intero-mode)
+(add-hook 'js2-mode-hook 'prettier-js-mode)
+(add-hook 'web-mode-hook 'prettier-js-mode)
+(add-hook 'rjsx-mode-hook 'prettier-js-mode)
+(add-hook 'rjsx-mode-hook 'auto-complete-mode)
+(add-hook 'rjsx-mode-hook 'ac-complete-imenu)
 
 ;;;;;;;;;;;;;;;;;;;
-;; SPLASH SCREEN ;;
+;; Splash SCREEN ;;
 ;;;;;;;;;;;;;;;;;;;
 
 (setq splash-art "
@@ -614,7 +626,7 @@ by using nxml's indentation rules."
 (insert-current-date-time)
 (insert splash-art)
 (beginning-of-buffer)
-(read-only-mode)
+(read-only-Mode)
 
 (provide '.emacs)
 ;;; .emacs ends here

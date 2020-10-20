@@ -8,15 +8,15 @@ sudo apt-get -qq dist-upgrade
 
 # Install APT packages.
 packages=(
+  aspell
   build-essential
-  cowsay
   git-core
   libssl-dev
   nmap
   sl
   telnet
   tree
-  emacs24
+  emacs25
   xclip
   htop
   multitail

@@ -1,31 +1,46 @@
 #!/usr/bin/env bash
 
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     machine="Linux";;
+    Darwin*)    machine="Mac";;
+    CYGWIN*)    machine="Cygwin";;
+    MINGW*)     machine="MinGw";;
+    *)          machine="UNKNOWN:${unameOut}"
+esac
+
 # cleanup docker's garbage
-./dotpurge
+dotpurge
 
-# Essential images
-docker pull docker.elastic.co/elasticsearch/elasticsearch:6.3.1
+if ["${machine}" = "Mac"]
+then
+    # homebrew house keeping
+    echo "updating Mac"
+    brew update
+    brew upgrade
+    brew cleanup -s
+    brew cask cleanup
+    brew doctor
+    brew missing
+    # osx refresh
+    mas upgrade
+else
+    # Unix stuff
+    echo "updating Ubuntu"
+    sudo apt update
+    sudo apt upgrade -y
+    sudo apt autoremove -y
+    sudo snap refresh
+fi
 
-# homebrew house keeping
-echo "giving brew some tlc"
-brew update
-brew upgrade
-brew cleanup -s
-brew cask cleanup
-brew doctor
-brew missing
+# get fresh base images
+echo "pulling latest versions of essential docker images"
 
-# node refresh
-echo "npm luvin'"
-npm cache clean --force
-npm install -g npm@latest
-npm update -g
-npm list -g 
+docker pull node:12.18-alpine3.11
+docker pull jupyter/datascience-notebook:latest
+docker pull docker.elastic.co/elasticsearch/elasticsearch:7.9.1
+docker pull postgres
+docker pull php
 
 
-# python refresh
-pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U
-
-# osx refresh
-mas upgrade
-
+echo "refresh complete"
